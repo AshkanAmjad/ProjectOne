@@ -40,7 +40,7 @@
         var title = $("#Title").val();
         $.post('@Url.Action("Add","Role")', { title: title })
             .done(function () {
-                $("#modal").hide();
+                $("#modal").toggle();
             alert("Successfully Adding.");
         })
     }

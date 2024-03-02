@@ -49,9 +49,10 @@
 </div>
 <script>
         function EditRole() {
-        var title = $("#Title").val();
-        $.post('@Url.Action("Edit","Role")', { title: title });
-    }
+            var title = $("#Title").val();
+            var roleid = $("#RoleId").val();
+        $.post('@Url.Action("Edit","Role")', { title: title,roleid:roleid });
+         }
 </script>
 
 

@@ -1,6 +1,8 @@
 ﻿using Bussiness.Security;
+using Domain.Data.Context;
 using Domain.Entities.Security.Model;
 using System;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace CMS.Controllers
@@ -32,21 +34,31 @@ namespace CMS.Controllers
         public ActionResult Add(Role role)
         {
             role.RoleId = Guid.NewGuid();
-            if(!ModelState.IsValid && role.Title == null)
+            if(!ModelState.IsValid || role.Title == null)
             {
                 return HttpNotFound();
             }
             var roleServices = new RoleServices();
-            roleServices.Add(role);
-            return RedirectToAction("Index");
+            bool result = roleServices.Add(role);
+            if (result == true)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return HttpNotFound();
+            }
         }
 
-        //public ActionResult Edit(Guid roleId)
-        //{
-        //    var roleService = new RoleServices();
-        //    var role = roleService.GetRoleWithId(roleId);
-        //    return View(role);
-        //}
+        public Role Edit(Guid roleId)
+        {
+            if (roleId != null)
+            {
+                var roleServices = new RoleServices();
+                return roleServices.GetRoleWithId(roleId);
+            }
+            return null;
+        }
 
         [HttpPost]
         public ActionResult Edit(Role role)
@@ -57,7 +69,7 @@ namespace CMS.Controllers
             }
             var roleServices = new RoleServices();
             bool result = roleServices.Edit(role.RoleId, role);
-            return Json(new { });
+            return Json(new {success = true,message = "saved Successfully",JsonRequestBehavior.AllowGet });
         }
 
         public ActionResult Delete(Guid roleId)

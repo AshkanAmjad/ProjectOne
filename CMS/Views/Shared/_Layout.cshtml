@@ -5,38 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/content/fontawesome")
     @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("style", required:false)
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar  navbar-fixed-top navbar-light">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <div style="display:flex;justify-content:center;align-items:center;">
+                    <i class="fa fa-lg fa-book text-info" style="margin-right:1rem"></i>
+                    @Html.ActionLink("Article Project", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar-collapse co
+                 +-llapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li style="display:flex;justify-content:center;align-items:center;">
+                        <i class="fa fa-home text-primary" style="margin-left:5rem"></i>
+                        @Html.ActionLink("Home", "Index", "Home")
+                    </li>
+                    <li style="display:flex;justify-content:center;align-items:center;">
+                        <i class="fa fa-folder text-primary" style="margin-left:3rem"></i>
+                        @Html.ActionLink("Articles", "Articles", "Home")
+                    </li>
+                    <li style="display:flex;justify-content:center;align-items:center;">
+                        <i class="fa fa-sign-in text-primary" style="margin-left:3rem"></i>
+                        @Html.ActionLink("Login", "Login", "Account")
+                    </li>
+                    <li style="display:flex;justify-content:center;align-items:center;">
+                        <i class="fa fa-users text-primary" style="margin-left:3rem;"></i>
+                        @Html.ActionLink("Roles", "GetRoles", "Role")
+                    </li>
                 </ul>
             </div>
         </div>
-    </div>
+    </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p><b class="text-muted">&copy; @DateTime.Now.Year</b> - <b class="text-primary">Artile Project</b></p>
         </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

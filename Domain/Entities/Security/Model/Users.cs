@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Domain.Entites.Security.Model
 {
-    public class User
+    public class Users
     {
         public Guid UserId { get; set; }
         public string UserName { get; set; }
@@ -13,8 +13,8 @@ namespace Domain.Entites.Security.Model
         public string Email { get; set; }
 
         #region Relations
-        public ICollection <Article> Artice { get; set; }
-        public ICollection <UserRole> UserRoles { get; set; }
+        public ICollection <Articles> Artice { get; set; }
+        public ICollection <UserRoles> UserRoles { get; set; }
         #endregion
     }
 }

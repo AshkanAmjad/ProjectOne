@@ -1,0 +1,46 @@
+﻿@model Domain.Entities.Security.Model.Role
+@{
+    ViewBag.Title = "EditRole";
+}
+@section style{
+    <style>
+        .hidden{
+            display:none;
+        }
+    </style>
+}
+<div class="btn btn-primary btn-sm" style="margin:1rem 2rem 1rem 0;width:10rem;font-weight:bold">
+    <i class="fa fa-edit" style="margin-right:1rem"></i>
+    Edit Role
+</div>
+
+<hr />
+<div class="panel panel-default " style="margin:5rem auto;width:75%;">
+    <div class="panel-heading text-center ">
+        <i class="fa  fa-lg fa-star" style="margin-right:1rem"></i>
+        <b>
+            Edit Role Form
+        </b>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm("EditRole", "Role", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.TextBoxFor(i => i.RoleId, new { @class = "hidden" })
+            <table style="margin:0 auto;">
+                <tr>
+                    <td>@Html.LabelFor(l => l.Title) &nbsp; : &nbsp;</td>
+                    <td>@Html.TextBoxFor(t => t.Title, new { @class = "form-control" })</td>
+                    <td style="font-size:1.1rem;" class="text-center">&nbsp;&nbsp;@Html.ValidationMessageFor(t => t.Title, null, new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="btn btn-success" style="width:100%;margin:2rem auto" value="Edit" type="submit" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</div>
+

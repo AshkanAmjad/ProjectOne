@@ -16,7 +16,14 @@ namespace Bussiness.Security
             }
         }
 
-        public bool Add(Role role)
+        public Role GetRoleWithId(Guid roleId)
+        {
+            using(CMSContext context = new CMSContext())
+            {
+                return context.Roles.Where(r => r.RoleId == roleId).FirstOrDefault();
+            }
+        }
+        public void Add(Role role)
         {
             Role nRole = new Role()
             {
@@ -28,7 +35,6 @@ namespace Bussiness.Security
                 context.Roles.Add(nRole);
                 context.SaveChanges();
             }
-            return true;
         }
 
         public bool Edit(System.Guid roleId, Role role)

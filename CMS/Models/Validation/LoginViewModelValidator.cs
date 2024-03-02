@@ -9,6 +9,6 @@ namespace CMS.Models.Validation
         {
             RuleFor(x => x.UserName).NotEmpty().WithMessage("Please Enter Your User Name");
             RuleFor(x => x.Password).NotEmpty().WithMessage("Please Enter Your Password");
-        }
+         }
     }
 }

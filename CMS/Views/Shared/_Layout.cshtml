@@ -41,7 +41,7 @@
                     </li>
                     <li style="display:flex;justify-content:center;align-items:center;">
                         <i class="fa fa-users text-primary" style="margin-left:3rem;"></i>
-                        @Html.ActionLink("Roles", "GetRoles", "Role")
+                        @Html.ActionLink("Roles", "Index", "Role")
                     </li>
                 </ul>
             </div>
@@ -58,6 +58,7 @@
     @Scripts.Render("~/bundles/jquery")
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
 
     @RenderSection("scripts", required: false)
 </body>

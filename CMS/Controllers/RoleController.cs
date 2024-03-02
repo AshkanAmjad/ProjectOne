@@ -7,11 +7,11 @@ namespace CMS.Controllers
 {
     public class RoleController : Controller
     {
-        public ActionResult GetRoles()
+        public ActionResult Index()
         {
             var roleServices = new RoleServices();
             var roles = roleServices.GetRoles();
-            if (roles.Count == 0)
+            if (roles.Count < 0)
             {
                 ViewBag.roleExistMessage = false;
                 return View();
@@ -23,39 +23,52 @@ namespace CMS.Controllers
             };
         }
 
-        public ActionResult AddRole(Role role)
+        public ActionResult Add()
         {
-            role.RoleId = Guid.NewGuid();
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-            var roleServices = new RoleServices();
-            bool result = roleServices.Add(role);
             return View();
         }
 
-        public ActionResult EditRole(Role role)
+        [HttpPost]
+        public ActionResult Add(Role role)
+        {
+            role.RoleId = Guid.NewGuid();
+            if(!ModelState.IsValid && role.Title == null)
+            {
+                return HttpNotFound();
+            }
+            var roleServices = new RoleServices();
+            roleServices.Add(role);
+            return RedirectToAction("Index");
+        }
+
+        //public ActionResult Edit(Guid roleId)
+        //{
+        //    var roleService = new RoleServices();
+        //    var role = roleService.GetRoleWithId(roleId);
+        //    return View(role);
+        //}
+
+        [HttpPost]
+        public ActionResult Edit(Role role)
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                return HttpNotFound();
             }
             var roleServices = new RoleServices();
             bool result = roleServices.Edit(role.RoleId, role);
-            return View();
+            return Json(new { });
         }
 
-        public ActionResult DeleteRole(Role role)
+        public ActionResult Delete(Guid roleId)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
             var roleServices = new RoleServices();
-            bool result = roleServices.Delete(role.RoleId);
-            return View("GetRoles");
+            bool result = roleServices.Delete(roleId);
+            return RedirectToAction("Index");
         }
-
     }
 }

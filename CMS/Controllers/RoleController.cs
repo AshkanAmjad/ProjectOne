@@ -42,7 +42,7 @@ namespace CMS.Controllers
             bool result = roleServices.Add(role);
             if (result == true)
             {
-                return RedirectToAction("Index");
+                return Json(new {success = true,message = "Saved Successfully",JsonRequestBehavior.AllowGet });
             }
             else
             {
@@ -69,7 +69,7 @@ namespace CMS.Controllers
             }
             var roleServices = new RoleServices();
             bool result = roleServices.Edit(role.RoleId, role);
-            return Json(new {success = true,message = "saved Successfully",JsonRequestBehavior.AllowGet });
+            return Json(new {success = true,message = "Updated Successfully",JsonRequestBehavior.AllowGet });
         }
 
         public ActionResult Delete(Guid roleId)

@@ -9,7 +9,7 @@ namespace Domain.Entites.Portal.Model
         public bool IsActive { get; set; }
 
         #region Relations
-        public ICollection<ArticleCategory> ArticeCategory { get; set; }
+        public virtual ICollection<ArticleCategory> ArticeCategory { get; set; }
         #endregion
     }
 }

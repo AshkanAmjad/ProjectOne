@@ -14,8 +14,8 @@ namespace Domain.Entites.Security.Model
         public bool IsActive { get; set; }
 
         #region Relations
-        public ICollection<Article> Articles { get; set; }
-        public ICollection<UserRole> UserRoles { get; set; }
+        public virtual ICollection<Article> Articles { get; set; }
+        public virtual ICollection<UserRole> UserRoles { get; set; }
         #endregion
     }
 }

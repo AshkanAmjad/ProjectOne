@@ -80,7 +80,7 @@
 </div>
 
 <hr />
-<div class="btn btn-primary btn-sm add-btn" onclick="AddRole()">
+<div class="btn btn-primary btn-sm add-btn btn-index-add-role">
     <i class="fa fa-plus btn-icons"></i>
     Add
 </div>
@@ -101,8 +101,9 @@
                 <tr>
                     <td>@item.Title</td>
                     <td>
-                        <div style="display:flex;justify-content:center;" >
-                            <div class="btn btn-warning edit-btn" onclick="EditRole(@item.RoleId)">
+                        <div style="display:flex;justify-content:center;">
+                            @*<div class="btn btn-warning edit-btn" onclick="EditRole('@item.RoleId')" data-id="@item.RoleId" id="btn-edit-role">*@
+                            <div class="btn btn-warning edit-btn btn-index-edit-role" data-roleid="@item.RoleId">
                                 <i class="fa fa-edit btn-icons"></i>
                                 Edit
                             </div>
@@ -134,22 +135,43 @@ else
 
 @section Scripts{
     <script>
-        function AddRole() {
-        $.get('@Url.Action("Add","Role")').done(function (result) {
-            $("#add-edit-box").html(result);
-            $("#add-edit-box").modal("show");
-            //$("#add-edit-box").trigger('focus');
-            //$("#add-edit-box").modal('show');
-        });
-        }
+        $(function () {
+            $(".btn-index-add-role").off("click");
+            $(".btn-index-add-role").on("click", function () {
+                $.get('@Url.Action("Add","Role")').done(function (result) {
+                    $("#add-edit-box").html(result);
+                    $("#add-edit-box").modal("show");
+                });
+            });
 
-        function EditRole(id) {
+            $(".btn-index-edit-role").off("click");
+            $(".btn-index-edit-role").on("click", function () {
+                var id = $(this).data("roleid");
+                $.get('@Url.Action("Edit","Role")', { roleId: id }).done(function (result) {
+                    $("#add-edit-box").html(result);
+                    $("#add-edit-box").modal("show");
+                });
+            });
+        });
+       
+        /////////////////////////////////////////////////////////////////////////////////
+        @*function EditRole(id) {
             $.get('@Url.Action("Edit","Role")', { roleId: id }).done(function (result) {
             $("#add-edit-box").html(result);
             $("#add-edit-box").modal("show");
             //$("#add-edit-box").trigger('focus');
             //$("#add-edit-box").modal('show');
         });
-        }
+        }*@
+
+        @*function AddRole() {
+                $.get('@Url.Action("Add","Role")').done(function (result) {
+                    $("#add-edit-box").html(result);
+                    $("#add-edit-box").modal("show");
+                    //$("#add-edit-box").trigger('focus');
+                    //$("#add-edit-box").modal('show');
+                });
+            }*@
+        
     </script>
 }

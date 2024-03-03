@@ -31,9 +31,8 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(Role role)
+        public ActionResult Add(Role role, string title)
         {
-            role.RoleId = Guid.NewGuid();
             if (!ModelState.IsValid || role.Title == null)
             {
                 return HttpNotFound();

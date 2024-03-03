@@ -13,7 +13,7 @@ namespace Domain.Entites.Portal.Model
         public Guid AuthorId { get; set; }
 
         #region Relations
-        public ICollection<ArticleCategory> ArticeCategory { get; set; }
+        public virtual ICollection<ArticleCategory> ArticeCategory { get; set; }
 
         public User Author { get; set; }
         #endregion

@@ -37,21 +37,34 @@
             }
         </div>
         <div class="modal-footer" style="display:flex;justify-content:center">
-            <input class="btn btn-success" value="Edit" type="submit" onclick="EditRole()" />
+            <input class="btn btn-success" value="Edit" type="button" id="btn-edit-role"/>
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
 <script>
-        function EditRole() {
+   $(function () {
+        $("#btn-edit-role").off("click");
+            $("#btn-edit-role").on("click", function () {
+                var id = $("#RoleId").val();
+                var title = $("#Title").val();
+                $.post('@Url.Action("Edit","Role")', { roleId: id, title: title }).done(function (result) {
+                    $("#add-edit-box").html(result);
+                    $("#add-edit-box").modal("show");
+                });
+            });
+    });
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+            @*function EditRole() {
             var title = $("#Title").val();
             var roleId = $("#RoleId").val();
             $.post('@Url.Action("Edit","Role")', { roleid: roleId, title: title })
                 .done(function () {
                     $("#modal").toggle();
                     alert("Successfully Editing");
-                };
-         }
+                });
+        }*@
 </script>
 
 

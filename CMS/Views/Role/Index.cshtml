@@ -101,8 +101,8 @@
                 <tr>
                     <td>@item.Title</td>
                     <td>
-                        <div style="display:flex;justify-content:center;" onclick="EditRole()">
-                            <div class="btn btn-warning edit-btn">
+                        <div style="display:flex;justify-content:center;" >
+                            <div class="btn btn-warning edit-btn" onclick="EditRole(@item.RoleId)">
                                 <i class="fa fa-edit btn-icons"></i>
                                 Edit
                             </div>
@@ -134,8 +134,6 @@ else
 
 @section Scripts{
     <script>
-
-
         function AddRole() {
         $.get('@Url.Action("Add","Role")').done(function (result) {
             $("#add-edit-box").html(result);
@@ -145,8 +143,8 @@ else
         });
         }
 
-        function EditRole() {
-        $.get('@Url.Action("Edit","Role")').done(function (result) {
+        function EditRole(id) {
+            $.get('@Url.Action("Edit","Role")', { roleId: id }).done(function (result) {
             $("#add-edit-box").html(result);
             $("#add-edit-box").modal("show");
             //$("#add-edit-box").trigger('focus');

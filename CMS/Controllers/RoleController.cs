@@ -34,7 +34,7 @@ namespace CMS.Controllers
         public ActionResult Add(Role role)
         {
             role.RoleId = Guid.NewGuid();
-            if(!ModelState.IsValid || role.Title == null)
+            if (!ModelState.IsValid || role.Title == null)
             {
                 return HttpNotFound();
             }
@@ -42,34 +42,36 @@ namespace CMS.Controllers
             bool result = roleServices.Add(role);
             if (result == true)
             {
-                return Json(new {success = true,message = "Saved Successfully",JsonRequestBehavior.AllowGet });
+                return Json(new { success = true, message = "Saved Successfully", JsonRequestBehavior.AllowGet });
             }
-            else
-            {
-                return HttpNotFound();
-            }
+            return HttpNotFound();
+
         }
 
-        public Role Edit(Guid roleId)
+        public ActionResult Edit(Guid roleId)
         {
             if (roleId != null)
             {
                 var roleServices = new RoleServices();
-                return roleServices.GetRoleWithId(roleId);
+                return View(roleServices.GetRoleWithId(roleId));
             }
-            return null;
+            return HttpNotFound();
         }
 
         [HttpPost]
-        public ActionResult Edit(Role role)
+        public ActionResult Edit(Guid roleId, string title)
         {
             if (!ModelState.IsValid)
             {
                 return HttpNotFound();
             }
             var roleServices = new RoleServices();
-            bool result = roleServices.Edit(role.RoleId, role);
-            return Json(new {success = true,message = "Updated Successfully",JsonRequestBehavior.AllowGet });
+            bool result = roleServices.Edit(roleId, title);
+            if (result == true)
+            {
+                return Json(new { success = true, message = "Updated Successfully", JsonRequestBehavior.AllowGet });
+            }
+            return HttpNotFound();
         }
 
         public ActionResult Delete(Guid roleId)
@@ -80,7 +82,11 @@ namespace CMS.Controllers
             }
             var roleServices = new RoleServices();
             bool result = roleServices.Delete(roleId);
-            return RedirectToAction("Index");
+            if (result == true)
+            {
+                return RedirectToAction("Index");
+            }
+            return HttpNotFound();
         }
     }
 }

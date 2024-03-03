@@ -38,15 +38,15 @@ namespace Bussiness.Security
             return true;
         }
 
-        public bool Edit(System.Guid roleId, Role role)
+        public bool Edit(System.Guid roleId, string title)
         {
             using (CMSContext context = new CMSContext())
             {
                 var data = context.Roles.Where(r => r.RoleId == roleId).FirstOrDefault();
                 if (data != null)
                 {
-                    data.RoleId = role.RoleId;
-                    data.Title = role.Title;
+                    data.RoleId = roleId;
+                    data.Title = title;
                     context.SaveChanges();
                     return true;
                 }

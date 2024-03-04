@@ -75,15 +75,26 @@ namespace CMS.Controllers
 
         public ActionResult Delete(Guid roleId)
         {
+            if(roleId != null)
+            {
+                var roleServices = new RoleServices();
+                return View(roleServices.GetRoleWithId(roleId));
+            }
+            return HttpNotFound();
+        }
+
+        [HttpPost]
+        public ActionResult Delete(Guid roleId , int service = 0)
+        {
             if (!ModelState.IsValid)
             {
-                return View();
+                return HttpNotFound();
             }
             var roleServices = new RoleServices();
             bool result = roleServices.Delete(roleId);
             if (result == true)
             {
-                return RedirectToAction("Index");
+                return Json(new { success = true, message = "Deleted Successfully", JsonRequestBehavior.AllowGet });
             }
             return HttpNotFound();
         }

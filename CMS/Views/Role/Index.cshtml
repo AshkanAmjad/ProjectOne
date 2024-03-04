@@ -108,9 +108,10 @@
                                 Edit
                             </div>
 
-                            <div class="btn btn-danger delete-btn" id="delete">
+                            <div class="btn btn-danger delete-btn btn-index-delete-role" data-roleid="@item.RoleId">
                                 <i class="fa fa-times btn-icons"></i>
-                                @Html.ActionLink("Delete", "Delete", new { item.RoleId })
+                                @*@Html.ActionLink("Delete", "Delete", new { item.RoleId })*@
+                                Delete
                             </div>
                         </div>
                     </td>
@@ -130,7 +131,7 @@ else
 
 }
 
-<div id="add-edit-box" class="modal fade" role="dialog">
+<div id="add-edit-delete-box" class="modal fade" role="dialog">
 </div>
 
 @section Scripts{
@@ -139,8 +140,8 @@ else
             $(".btn-index-add-role").off("click");
             $(".btn-index-add-role").on("click", function () {
                 $.get('@Url.Action("Add","Role")').done(function (result) {
-                    $("#add-edit-box").html(result);
-                    $("#add-edit-box").modal("show");
+                    $("#add-edit-delete-box").html(result);
+                    $("#add-edit-delete-box").modal("show");
                 });
             });
 
@@ -148,8 +149,17 @@ else
             $(".btn-index-edit-role").on("click", function () {
                 var id = $(this).data("roleid");
                 $.get('@Url.Action("Edit","Role")', { roleId: id }).done(function (result) {
-                    $("#add-edit-box").html(result);
-                    $("#add-edit-box").modal("show");
+                    $("#add-edit-delete-box").html(result);
+                    $("#add-edit-delete-box").modal("show");
+                });
+            });
+
+            $(".btn-index-delete-role").off("click");
+            $(".btn-index-delete-role").on("click", function () {
+                var id = $(this).data("roleid");
+                $.get('@Url.Action("Delete","Role")', { roleId: id }).done(function (result) {
+                    $("#add-edit-delete-box").html(result);
+                    $("#add-edit-delete-box").modal("show");
                 });
             });
         });

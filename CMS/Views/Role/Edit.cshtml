@@ -1,7 +1,7 @@
 ﻿@model Domain.Entities.Security.Model.Role
 @{
     Layout = null;
-    ViewBag.Title = "EditRole";
+    ViewBag.Title = "Edit Role";
 }
 @section style{
     <style>
@@ -49,8 +49,8 @@
                 var id = $("#RoleId").val();
                 var title = $("#Title").val();
                 $.post('@Url.Action("Edit","Role")', { roleId: id, title: title }).done(function (result) {
-                    $("#add-edit-box").html(result);
-                    $("#add-edit-box").modal("show");
+                    $("#add-edit-delete-box").html(result);
+                    $("#add-edit-delete-box").modal("show");
                 });
             });
     });

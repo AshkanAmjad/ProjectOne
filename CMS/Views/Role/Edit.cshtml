@@ -15,14 +15,14 @@
         <div class="modal-header">
             <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">
-                <i class="fa  fa-lg fa-Edit" style="margin-right:1rem"></i>
+                <i class="fa fa-lg fa-edit" style="margin-right:1rem"></i>
                 <b>
                     Edit Role Form
                 </b>
             </h4>
         </div>
         <div class="modal-body">
-            @using (Html.BeginForm("Edit","Role", FormMethod.Post))
+            @using (Html.BeginForm("Edit", "Role", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
@@ -37,7 +37,7 @@
             }
         </div>
         <div class="modal-footer" style="display:flex;justify-content:center">
-            <input class="btn btn-success" value="Edit" type="button" id="btn-edit-role"/>
+            <input class="btn btn-warning" value="Edit" type="button" id="btn-edit-role" />
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
     </div>
@@ -48,10 +48,18 @@
             $("#btn-edit-role").on("click", function () {
                 var id = $("#RoleId").val();
                 var title = $("#Title").val();
-                $.post('@Url.Action("Edit","Role")', { roleId: id, title: title }).done(function (result) {
-                    $("#add-edit-delete-box").html(result);
-                    $("#add-edit-delete-box").modal("show");
-                });
+                $("#btn-edit-role").prop('disabled', true);
+                $.post('@Url.Action("Edit","Role")', { roleId: id, title: title })
+                    .done(function (result) {
+
+                        if (result.success) {
+                            window.location.reload();
+                        }
+                        alert(result.message);
+                    })
+                    .always(function () {
+                        $("#btn-edit-role").prop('disabled', false);
+                    });
             });
     });
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Domain.Entities.Security.Model.Role>
+﻿@model List<Domain.Entities.Security.Model.Role>
 
 @{
     ViewBag.Title = "DisplayRoles";
@@ -84,11 +84,10 @@
     <i class="fa fa-plus btn-icons"></i>
     Add
 </div>
-
 @*if (ViewBag.roleExistMessage)*@
 @if (Model != null && Model.Count() > 0)
 {
-    <table class="table table-bordered table-striped" style="width:50%;margin:0 auto;">
+    <table class="table table-bordered table-striped tbl-data-class" style="width:50%;margin:0 auto;">
         <thead>
             <tr>
                 <th scope="col" class="text-center">Title</th>
@@ -110,7 +109,6 @@
 
                             <div class="btn btn-danger delete-btn btn-index-delete-role" data-roleid="@item.RoleId">
                                 <i class="fa fa-times btn-icons"></i>
-                                @*@Html.ActionLink("Delete", "Delete", new { item.RoleId })*@
                                 Delete
                             </div>
                         </div>
@@ -132,6 +130,7 @@ else
 }
 
 <div id="add-edit-delete-box" class="modal fade" role="dialog">
+
 </div>
 
 @section Scripts{
@@ -163,7 +162,8 @@ else
                 });
             });
         });
-       
+
+
         /////////////////////////////////////////////////////////////////////////////////
         @*function EditRole(id) {
             $.get('@Url.Action("Edit","Role")', { roleId: id }).done(function (result) {
@@ -182,6 +182,6 @@ else
                     //$("#add-edit-box").modal('show');
                 });
             }*@
-        
+
     </script>
 }

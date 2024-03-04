@@ -41,11 +41,18 @@
         $("#btn-add-role").off("click");
         $("#btn-add-role").on("click", function () {
             var title = $("#Title").val();
+            $("#btn-add-role").prop('disabled', true);
             //var data = $("#AddRoleForm").serializeObject(true);
             $.post('@Url.Action("Add","Role")', { title: title })
                 .done(function (result) {
-                    $("#modal").toggle();
-                    alert("Successfully Adding.");
+
+                    if (result.success) {
+                        window.location.reload();
+                    }
+                    alert(result.message);
+                })
+                .always(function () {
+                    $("#btn-add-role").prop('disabled', false);
                 });
         });
     });

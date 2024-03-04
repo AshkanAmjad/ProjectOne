@@ -1,6 +1,7 @@
 ﻿using Bussiness.Security;
 using Domain.Data.Context;
 using Domain.Entities.Security.Model;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Web.Mvc;
@@ -13,14 +14,28 @@ namespace CMS.Controllers
         {
             var roleServices = new RoleServices();
             var roles = roleServices.GetRoles();
+            //using (CMSContext context = new CMSContext())
+            //{
+            //    if (roles.Count >= 0)
+            //    {
+            //        ViewBag.roleExistMessage = true;
+            //    }
+            //    else
+            //    {
+            //        ViewBag.roleExistMessage = false;
+            //    }
+            //    return Json(new { data = roles }, JsonRequestBehavior.AllowGet);
+            //}
+
             if (roles.Count < 0)
             {
-                ViewBag.roleExistMessage = false;
+                ViewBag.roleExistMessage = true;
                 return View();
             }
             else
             {
-                ViewBag.roleExistMessage = true;
+                ViewBag.roleExistMessage = false;
+                ViewBag.similaryMessage = false;
                 return View(roles);
             };
         }
@@ -33,18 +48,38 @@ namespace CMS.Controllers
         [HttpPost]
         public ActionResult Add(Role role, string title)
         {
-            if (!ModelState.IsValid || role.Title == null)
+            bool success = false;
+            var message = "Recorded unsuccessfully";
+            if (ModelState.IsValid && role.Title != null)
             {
-                return HttpNotFound();
+                try
+                {
+                    var roleServices = new RoleServices();
+                    bool result = roleServices.Add(role);
+                    if (result == true)
+                    {
+                        success = true;
+                        message = "Saved Successfully";
+                    }
+                    else if (result == false)
+                    {
+                        message = "Duplicated Record";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = "Recorded unsuccessfully : " + ex.Message;
+                }
             }
-            var roleServices = new RoleServices();
-            bool result = roleServices.Add(role);
-            if (result == true)
+            else
             {
-                return Json(new { success = true, message = "Saved Successfully", JsonRequestBehavior.AllowGet });
+                message = "Data is not valid";
             }
-            return HttpNotFound();
-
+            return Json(new { success = success, message = message, JsonRequestBehavior.AllowGet });
         }
 
         public ActionResult Edit(Guid roleId)
@@ -60,22 +95,43 @@ namespace CMS.Controllers
         [HttpPost]
         public ActionResult Edit(Guid roleId, string title)
         {
-            if (!ModelState.IsValid)
+            bool success = false;
+            var message = "Updated unsuccessfully";
+            if (ModelState.IsValid)
             {
-                return HttpNotFound();
+                try
+                {
+                    var roleServices = new RoleServices();
+                    bool result = roleServices.Edit(roleId, title);
+                    if (result == true)
+                    {
+                        success = true;
+                        message = "Updated Successfully";
+                    }
+                    else
+                    {
+                        message = "Duplicated Record";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = "Updated unsuccessfully : " + ex.Message;
+                }
             }
-            var roleServices = new RoleServices();
-            bool result = roleServices.Edit(roleId, title);
-            if (result == true)
+            else
             {
-                return Json(new { success = true, message = "Updated Successfully", JsonRequestBehavior.AllowGet });
+                message = "Data is not valid";
             }
-            return HttpNotFound();
+            return Json(new { success = success, message = message, JsonRequestBehavior.AllowGet });
         }
 
         public ActionResult Delete(Guid roleId)
         {
-            if(roleId != null)
+            if (roleId != null)
             {
                 var roleServices = new RoleServices();
                 return View(roleServices.GetRoleWithId(roleId));
@@ -84,19 +140,37 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(Guid roleId , int service = 0)
+        public ActionResult Delete(Guid roleId, int service = 0)
         {
-            if (!ModelState.IsValid)
+            bool success = false;
+            var message = "Deleted unsuccessfully";
+            if (ModelState.IsValid)
             {
-                return HttpNotFound();
+                try
+                {
+                    var roleServices = new RoleServices();
+                    bool result = roleServices.Delete(roleId);
+                    if (result == true)
+                    {
+                        success = true;
+                        message = "Deleted Successfully";
+                    }
+                }
+                catch(Exception ex)
+                {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    message = "Deleted unsuccessfuly";
+                }
             }
-            var roleServices = new RoleServices();
-            bool result = roleServices.Delete(roleId);
-            if (result == true)
+            else
             {
-                return Json(new { success = true, message = "Deleted Successfully", JsonRequestBehavior.AllowGet });
+                message = "Data is not valid";
             }
-            return HttpNotFound();
+            return Json(new { success = success, message = "Deleted Successfully", JsonRequestBehavior.AllowGet });
+
         }
     }
 }

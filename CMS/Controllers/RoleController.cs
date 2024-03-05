@@ -1,6 +1,8 @@
 ﻿using Bussiness.Security;
+using CMS.Models.Validation;
 using Domain.Data.Context;
 using Domain.Entities.Security.Model;
+using FluentValidation.Results;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -45,6 +47,7 @@ namespace CMS.Controllers
             bool success = false;
             var message = "Recorded unsuccessfully";
 
+
             if (ModelState.IsValid)
             {
                 try
@@ -74,7 +77,7 @@ namespace CMS.Controllers
             {
                 message = "Data is not valid";
             }
-            return Json(new { success = success, message = message, JsonRequestBehavior.AllowGet });
+            return Json(new { success = success, message = message , JsonRequestBehavior.AllowGet });
         }
 
         public ActionResult Edit(Guid roleId)

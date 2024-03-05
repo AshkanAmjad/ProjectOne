@@ -44,7 +44,8 @@
                 $.post('@Url.Action("Delete","Role")', { roleId: id })
                     .done(function (result) {
                         if (result.success) {
-                            window.location.reload();
+                             gridLoad();
+                            $("#add-edit-delete-box").modal("toggle");
                         }
                         alert(result.message);
                     })

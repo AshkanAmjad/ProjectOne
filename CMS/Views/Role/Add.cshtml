@@ -9,7 +9,7 @@
         <div class="modal-header">
             <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">
-                <i class="fa  fa-lg fa-plus" style="margin-right:1rem"></i>
+                <i class="fa fa-lg fa-plus" style="margin-right:1rem"></i>
                 <b>
                     Add Role Form
                 </b>
@@ -32,30 +32,59 @@
         <div class="modal-footer" style="display:flex;justify-content:center">
             @*<input class="btn btn-success" value="Add" type="button" onclick="AddRole()" />*@
             <input class="btn btn-success" value="Add" type="button" id="btn-add-role" />
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="closeBtn">Close</button>
         </div>
     </div>
 </div>
-<script>
-    $(function(){
-        $("#btn-add-role").off("click");
-        $("#btn-add-role").on("click", function () {
-            var title = $("#Title").val();
-            $("#btn-add-role").prop('disabled', true);
-            //var data = $("#AddRoleForm").serializeObject(true);
-            $.post('@Url.Action("Add","Role")', { title: title })
-                .done(function (result) {
+<script src="~/Scripts/jquery.validate.min.js"></script>
 
-                    if (result.success) {
-                        window.location.reload();
-                    }
-                    alert(result.message);
-                })
-                .always(function () {
-                    $("#btn-add-role").prop('disabled', false);
-                });
+
+<script>
+    $(function () {
+        $("#btn-add-role").off("click");
+        $("#btn-add-role").on("click", function (e) {
+
+            var title = $("#@Html.IdFor(x=>x.Title)").val();
+            var data = {
+                title: title
+            };
+
+            if (validateRole(data)) {
+                $("#btn-add-role").prop('disabled', true);
+            $.post('@Url.Action("Add","Role")', data).done(function (result) {
+                if (result.success) {
+                    gridLoad();
+                    $("#add-edit-delete-box").modal("toggle");
+                }
+            }).always(function () {
+                $("#btn-add-role").prop('disabled', false);
+            });
+            }
+
         });
     });
+
+    function validateRole(data) {
+
+        return true;
+        if (data !== null) {
+            if (data.title == null || data.title.length == 0) {
+                alert('title is required');
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    $('form').validate({
+        rules: {
+            'title': required
+        },
+        messages: {
+            'title':'Enter role title'
+        }
+    })
     ///////////////////////////////////////////////////////////////
     @*function AddRole() {
             var title = $("#Title").val();

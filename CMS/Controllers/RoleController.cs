@@ -12,20 +12,13 @@ namespace CMS.Controllers
     {
         public ActionResult Index()
         {
+            return View();
+        }
+
+        public ActionResult Get()
+        {
             var roleServices = new RoleServices();
             var roles = roleServices.GetRoles();
-            //using (CMSContext context = new CMSContext())
-            //{
-            //    if (roles.Count >= 0)
-            //    {
-            //        ViewBag.roleExistMessage = true;
-            //    }
-            //    else
-            //    {
-            //        ViewBag.roleExistMessage = false;
-            //    }
-            //    return Json(new { data = roles }, JsonRequestBehavior.AllowGet);
-            //}
 
             if (roles.Count < 0)
             {
@@ -35,10 +28,11 @@ namespace CMS.Controllers
             else
             {
                 ViewBag.roleExistMessage = false;
-                ViewBag.similaryMessage = false;
                 return View(roles);
             };
         }
+
+
 
         public ActionResult Add()
         {
@@ -46,11 +40,12 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(Role role, string title)
+        public ActionResult Add(Role role)
         {
             bool success = false;
             var message = "Recorded unsuccessfully";
-            if (ModelState.IsValid && role.Title != null)
+
+            if (ModelState.IsValid)
             {
                 try
                 {
@@ -97,7 +92,7 @@ namespace CMS.Controllers
         {
             bool success = false;
             var message = "Updated unsuccessfully";
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && title != "")
             {
                 try
                 {
@@ -156,7 +151,7 @@ namespace CMS.Controllers
                         message = "Deleted Successfully";
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     while (ex.InnerException != null)
                     {

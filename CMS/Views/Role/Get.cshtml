@@ -1,0 +1,48 @@
+﻿@model List<Domain.Entities.Security.Model.Role>
+
+@{
+    ViewBag.Title = "Get Roles";
+    Layout = null;
+}
+
+@if (Model != null)
+{
+
+    <table class="table table-bordered table-striped" style="width:50%;margin:0 auto;">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center">Title</th>
+                <th scope="col" class="text-center">Operations</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>
+                        <div style="display:flex;justify-content:center;">
+                            <div class="btn btn-warning edit-btn" data-roleid="@item.RoleId">
+                                <i class="fa fa-edit btn-icons"></i>
+                                Edit
+                            </div>
+                            <div class="btn btn-danger delete-btn btn-index-delete-role" data-roleid="@item.RoleId">
+                                <i class="fa fa-times btn-icons"></i>
+                                Delete
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-danger text-center alert-custom">
+        <p class="help-block">
+            <i class="fa fa-exclamation-triangle"></i>
+            There are no items to display.
+        </p>
+    </div>
+}

@@ -16,13 +16,6 @@
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
 
-                if (ViewBag.Message != null)
-                {
-                    <p style="border: 1px solid red">
-                        @ViewBag.Message
-                    </p>
-                }
-
                 <table style="margin:0 auto;">
                     <tr>
                         <td>@Html.LabelFor(l => l.UserName)&nbsp; : &nbsp;</td>

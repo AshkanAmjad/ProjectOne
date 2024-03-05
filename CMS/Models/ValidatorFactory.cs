@@ -1,5 +1,6 @@
 ﻿using CMS.Models.Validation;
 using CMS.Models.ViewModel;
+using Domain.Entities.Security.Model;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace CMS.Models
         static ValidatorFactory()
         {
             validators.Add(typeof(IValidator<LoginViewModel>), new LoginViewModelValidator());
+            validators.Add(typeof(IValidator<Role>), new RoleViewModelValidator());
         }
 
         public override IValidator CreateInstance(Type validatorType)

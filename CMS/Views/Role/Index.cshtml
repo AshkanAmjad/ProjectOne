@@ -1,9 +1,7 @@
-﻿@model List<Domain.Entities.Security.Model.Role>
-
+﻿
 @{
-    ViewBag.Title = "DisplayRoles";
+    ViewBag.Title = "Display Roles";
 }
-
 @section style{
     <style>
         a {
@@ -74,143 +72,86 @@
         }
     </style>
 }
+
+
 <div class="btn btn-primary btn-sm btn-Roles">
     <i class="fa fa-users btn-icons"></i>
     Roles
 </div>
-
 <hr />
 <div class="btn btn-primary btn-sm add-btn btn-index-add-role">
     <i class="fa fa-plus btn-icons"></i>
     Add
 </div>
-@*if (ViewBag.roleExistMessage)*@
-@if (Model != null && Model.Count() > 0)
-{
-    <table class="table table-bordered table-striped tbl-data-class" style="width:50%;margin:0 auto;">
-        <thead>
-            <tr>
-                <th scope="col" class="text-center">Title</th>
-                <th scope="col" class="text-center">Operations</th>
-            </tr>
-        </thead>
-        <tbody class="text-center tbody-addRow">
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Title</td>
-                    <td>
-                        <div style="display:flex;justify-content:center;">
-                            @*<div class="btn btn-warning edit-btn" onclick="EditRole('@item.RoleId')" data-id="@item.RoleId" id="btn-edit-role">*@
-                            <div class="btn btn-warning edit-btn btn-index-edit-role" data-roleid="@item.RoleId">
-                                <i class="fa fa-edit btn-icons"></i>
-                                Edit
-                            </div>
 
-                            <div class="btn btn-danger delete-btn btn-index-delete-role" data-roleid="@item.RoleId">
-                                <i class="fa fa-times btn-icons"></i>
-                                Delete
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <div class="alert alert-danger text-center alert-custom">
-        <p class="help-block">
-            <i class="fa fa-exclamation-triangle"></i>
-            There are no items to display.
-        </p>
-    </div>
 
-}
+<div id="table-box">
+</div>
+
 
 <div id="add-edit-delete-box" class="modal fade" role="dialog">
-
 </div>
-<button class="btn btn-default" id="addRow">
-    Add Row
-</button>
 
-@section Scripts{
-    <script>
-        $(function () {
-            $(".btn-index-add-role").off("click");
-            $(".btn-index-add-role").on("click", function () {
-                $.get('@Url.Action("Add","Role")').done(function (result) {
-                    $("#add-edit-delete-box").html(result);
-                    $("#add-edit-delete-box").modal("show");
-                });
-            });
+@section scripts
+{
+    <script type="text/javascript">
+        var _roleListUrl = '@Url.Action("Get" , "Role")';
+        var _addUrl = '@Url.Action("Add","Role")';
+        var _editUrl = '@Url.Action("Edit","Role")';
+        var _deleteUrl = '@Url.Action("Delete","Role")';
+    </script>
 
-            $(".btn-index-edit-role").off("click");
-            $(".btn-index-edit-role").on("click", function () {
-                var id = $(this).data("roleid");
-                $.get('@Url.Action("Edit","Role")', { roleId: id }).done(function (result) {
-                    $("#add-edit-delete-box").html(result);
-                    $("#add-edit-delete-box").modal("show");
-                });
-            });
-
-            $(".btn-index-delete-role").off("click");
-            $(".btn-index-delete-role").on("click", function () {
-                var id = $(this).data("roleid");
-                $.get('@Url.Action("Delete","Role")', { roleId: id }).done(function (result) {
-                    $("#add-edit-delete-box").html(result);
-                    $("#add-edit-delete-box").modal("show");
-                });
-            });
-
-            $('#addRow').off('click');
-            $('#addRow').on("click", function () {
-                var html = `<tr>
-                                    <td>
-    
-                                    </td> 
-
-                                    <td>
-                                      <div style="display:flex;justify-content:center;">
-                                          <div class="btn btn-warning edit-btn btn-index-edit-role" data-roleid="">
-                                            <i class="fa fa-edit btn-icons"></i>
-                                               Edit
-                                            </div>
-
-                                           <div class="btn btn-danger delete-btn btn-index-delete-role" data-roleid="">
-                                           <i class="fa fa-times btn-icons"></i>
-                                            Delete
-                                           </div>
-                                         </div>
-                                    </td>
-                           </tr>`;
-                $(".tbody-addRow").append(html)
-            });
-
-
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            //init grid
+            gridLoad();
         });
 
-
-        /////////////////////////////////////////////////////////////////////////////////
-        @*function EditRole(id) {
-            $.get('@Url.Action("Edit","Role")', { roleId: id }).done(function (result) {
-            $("#add-edit-box").html(result);
-            $("#add-edit-box").modal("show");
-            //$("#add-edit-box").trigger('focus');
-            //$("#add-edit-box").modal('show');
+        //create modal
+        $(".btn-index-add-role").off("click");
+        $(".btn-index-add-role").on("click", function () {
+            $.get(_addUrl).done(function (result) {
+                $("#add-edit-delete-box").html(result);
+                $("#add-edit-delete-box").modal("show");
+            });
         });
-        }*@
 
-        @*function AddRole() {
-                $.get('@Url.Action("Add","Role")').done(function (result) {
-                    $("#add-edit-box").html(result);
-                    $("#add-edit-box").modal("show");
-                    //$("#add-edit-box").trigger('focus');
-                    //$("#add-edit-box").modal('show');
+        //edit modal
+        $(document).off('click', '.edit-btn');
+        $(document).on('click', '.edit-btn', function (e) {
+            e.preventDefault();
+            var id = $(this).data("roleid");
+            $.get(_editUrl, { roleId: id }).done(function (result) {
+                $("#add-edit-delete-box").html(result);
+                $("#add-edit-delete-box").modal("show");
+            });
+        })
+
+            //delete modal
+            $(document).off('click', '.btn-index-delete-role');
+            $(document).on('click', '.btn-index-delete-role', function (e) {
+                var id = $(this).data("roleid");
+                $.get(_deleteUrl, { roleId: id }).done(function (result) {
+                    $("#add-edit-delete-box").html(result);
+                    $("#add-edit-delete-box").modal("show");
                 });
-            }*@
+            });
 
+
+            //refresh grid
+            function gridLoad() {
+                $("#table-box").empty();
+                $.ajax({
+                    url: _roleListUrl,
+                    type: 'GET',
+                    datatype: "json",
+                    success: function (response) {
+                        $("#table-box").html(response);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
     </script>
 }

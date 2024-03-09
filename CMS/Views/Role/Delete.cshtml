@@ -24,6 +24,8 @@
         </div>
         <div class="modal-body">
             @Html.TextBoxFor(i => i.RoleId, new { @class = "hidden" })
+            @Html.TextBoxFor(i => i.Title, new { @class = "hidden" })
+
             <p>
                 <i class="fa fa-exclamation-triangle fa-lg" style="margin-right:1rem"></i>
                 Are you sure you want to delete <u class="text-danger">@Model.Title</u> ?

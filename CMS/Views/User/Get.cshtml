@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ViewModels.Models.Users.UserViewModel>
+
+@{
+    ViewBag.Title = "Get Users";
+    Layout = null;
+}
+
+@if (Model != null)
+{
+    <table class="table table-bordered table-striped table-custom">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center">User Name</th>
+                <th scope="col" class="text-center">Email</th>
+                <th scope="col" class="text-center">Operations</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.UserName</td>
+                    <td>@item.Email</td>
+                    <td>
+                        <div class="position-buttons">
+                            <div class="btn btn-warning edit" data-userId="@item.UserId">
+                                <i class="fa fa-edit icons"></i>
+                                Edit
+                            </div>
+                            <div class="btn btn-danger delete" data-userId="@item.UserId">
+                                <i class="fa fa-times icons"></i>
+                                Delete
+                            </div>
+                            <div></div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-danger text-center">
+        <p class="help-block">
+            <i class="fa fa-exclamation-triangle">
+                There are  no items to display.
+            </i>
+        </p>
+    </div>
+}

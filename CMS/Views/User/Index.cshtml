@@ -1,0 +1,160 @@
+﻿@{
+    ViewBag.Title = "Display Users";
+}
+@section style{
+    <style>
+        a {
+            text-decoration: none;
+        }
+
+        .table-custom {
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        #delete a {
+            color: white
+        }
+
+        .add {
+            margin: 1rem 2rem 1rem 0;
+            width: 10rem;
+            font-weight: bold;
+        }
+
+        .edit {
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .delete {
+            font-weight: bold;
+        }
+
+        .panel-heading-custom {
+            font-weight: bold;
+        }
+
+        .close {
+            cursor: pointer;
+            color: red;
+            position: absolute;
+            right: 10px;
+        }
+
+        .panel-custom {
+            width: 30%;
+            position: absolute;
+        }
+
+        .button-Users {
+            margin: 1rem 2rem 1rem 0;
+            width: 10rem;
+            font-weight: bold;
+        }
+
+        .icons {
+            margin-right: 1rem;
+        }
+
+        .justify-content-center, .modal-footer-custom, .position-buttons {
+            display: flex;
+            justify-content: center;
+        }
+
+        .alert-custom {
+            margin: 0 auto;
+            width: 50%;
+        }
+
+        .validation-text-custom {
+            font-size: 1.1rem;
+        }
+
+        .validation-table-custom {
+            margin: 0 auto;
+        }
+
+        td {
+            padding: 5px 0;
+        }
+    </style>
+}
+<div class="btn btn-primary btn-sm button-Users">
+    <i class="fa fa-users icons"></i>
+    Users
+</div>
+<hr />
+<div class="btn btn-primary btn-sm add">
+    <i class="fa fa-plus icons"></i>
+    Add
+</div>
+
+<div id="table-box">
+</div>
+
+<div id="operation-box" class="modal fade" role="dialog">
+</div>
+
+@section scripts
+        {
+    <script type="text/javascript">
+        var _userListUrl = '@Url.Action("Get","User")';
+        var _addUrl = '@Url.Action("Add","User")';
+        var _editUrl = '@Url.Action("Edit","User")';
+        var _deleteUrl = '@Url.Action("Delete","User")';
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            //init grid
+            gridLoad();
+        });
+
+        //refresh grid
+        function gridLoad() {
+            $("#table-box").empty();
+            $.ajax({
+                url: _userListUrl,
+                type: "Get",
+                datatype: "json",
+                success: function (response) {
+                    $("#table-box").html(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        //create modal
+        $(".add").off("click");
+        $(".add").on("click", function () {
+            $.get(_addUrl).done(function (result) {
+                $("#operation-box").html(result);
+                $("#operation-box").modal("show");
+            });
+        });
+
+        //edit modal
+        $(document).off('click', '.edit');
+        $(document).on('click', '.edit', function (e) {
+            e.preventDefault();
+            var id = $(this).data("userid");
+            $.get(_editUrl, { userId: id }).done(function (result) {
+                $("#operation-box").html(result);
+                $("#operation-box").modal("show");
+            });
+        })
+
+        //Delete Modal
+        $(document).off('click', '.delete');
+        $(document).on('click', '.delete', function (e) {
+            var id = $(this).data("userid")
+            $.get(_deleteUrl, { userId: id }).done(function (result) {
+                $("#operation-box").html(result);
+                $("#operation-box").modal("show");
+            });
+        });
+
+    </script>
+}

@@ -57,6 +57,7 @@
                     if (result.success) {
                         gridLoad();
                         $("#add-edit-delete-box").modal("toggle");
+                        alert(result.message);
                     }
                     else {
                         alert(result.message);

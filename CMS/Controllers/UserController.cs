@@ -1,16 +1,12 @@
 ﻿using Bussiness.Security;
-using CMS.Models.Validation;
-using Domain.Data.Context;
-using Domain.Entities.Security.Model;
-using FluentValidation.Results;
-using Newtonsoft.Json;
+using CMS.Models.ViewModels.User;
 using System;
-using System.Linq;
 using System.Web.Mvc;
+using ViewModels.Models.Users;
 
 namespace CMS.Controllers
 {
-    public class RoleController : Controller
+    public class UserController : Controller
     {
         public ActionResult Index()
         {
@@ -19,19 +15,19 @@ namespace CMS.Controllers
 
         public ActionResult Get()
         {
-            var roleServices = new RoleServices();
-            var roles = roleServices.GetRoles();
+            var userServices = new UserServices();
+            var users = userServices.GetUers();
 
-            if (roles.Count < 0)
+            if (users.Count < 0)
             {
-                ViewBag.roleExistMessage = true;
+                ViewBag.userExistMessage = true;
                 return View();
             }
             else
             {
-                ViewBag.roleExistMessage = false;
-                return View(roles);
-            };
+                ViewBag.userExistMessage = false;
+                return View(users);
+            }
         }
 
         public ActionResult Add()
@@ -40,17 +36,17 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(Role role)
+        public ActionResult Add(AddViewModel user)
         {
             bool success = false;
             var message = "Recorded unsuccessfully";
-
+            var checkMessage = "";
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var roleServices = new RoleServices();
-                    bool result = roleServices.Add(role);
+                    var userServices = new UserServices();
+                    bool result = userServices.Add(user, out checkMessage);
                     if (result == true)
                     {
                         success = true;
@@ -58,7 +54,7 @@ namespace CMS.Controllers
                     }
                     else if (result == false)
                     {
-                        message = "Duplicated Record";
+                        message = checkMessage;
                     }
                 }
                 catch (Exception ex)
@@ -74,30 +70,37 @@ namespace CMS.Controllers
             {
                 message = "Data is not valid";
             }
-            return Json(new { success = success, message = message , JsonRequestBehavior.AllowGet });
+            return Json(new { success = success, message = message, JsonRequestBehavior.AllowGet });
         }
 
-        public ActionResult Edit(Guid roleId)
+        public ActionResult Edit(Guid userId)
         {
-            if (roleId != null)
+            if(userId == Guid.Empty)
             {
-                var roleServices = new RoleServices();
-                return View(roleServices.GetRoleById(roleId));
+                return HttpNotFound();
             }
-            return HttpNotFound();
+            var userServices = new UserServices();
+            var user = userServices.GetUserByIdForEdit(userId);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(user);
         }
 
         [HttpPost]
-        public ActionResult Edit(Guid roleId, string title)
+        public ActionResult Edit(EditViewModel model)
         {
             bool success = false;
-            var message = "Updated Unsuccessfully";
-            if (ModelState.IsValid && title != "")
+            var message = "Updated unsuccessfully";
+            var checkMessage = "";
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    var roleServices = new RoleServices();
-                    bool result = roleServices.Edit(roleId, title);
+                    var userServices = new UserServices();
+                    bool result = userServices.Edit(model, out checkMessage);
                     if (result == true)
                     {
                         success = true;
@@ -105,7 +108,7 @@ namespace CMS.Controllers
                     }
                     else
                     {
-                        message = "Duplicated Record";
+                        message = checkMessage;
                     }
                 }
                 catch (Exception ex)
@@ -121,34 +124,44 @@ namespace CMS.Controllers
             {
                 message = "Data is not valid";
             }
+
             return Json(new { success = success, message = message, JsonRequestBehavior.AllowGet });
+
         }
 
-        public ActionResult Delete(Guid roleId)
+        public ActionResult Delete(Guid userId)
         {
-            if (roleId != null)
+            if (userId == Guid.Empty)
             {
-                var roleServices = new RoleServices();
-                return View(roleServices.GetRoleById(roleId));
+                return HttpNotFound();
             }
-            return HttpNotFound();
+            var userServices = new UserServices();
+            var user = userServices.GetUserByIdForDelete(userId);
+            if(user == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(user);
+
+
         }
 
         [HttpPost]
-        public ActionResult Delete(Guid roleId, int service = 0)
+        public ActionResult Delete(DeleteViewModel model)
         {
             bool success = false;
-            var message = "Deleted Unsuccessfully";
+            var message = "Deleted unsuccessfully";
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var roleServices = new RoleServices();
-                    bool result = roleServices.Delete(roleId);
+                    var userServices = new UserServices();
+                    bool result = userServices.Delete(model);
                     if (result == true)
                     {
                         success = true;
-                        message = "Deleted Successfully";
+                        message = "Deleted Unsuccessfully";
                     }
                 }
                 catch (Exception ex)
@@ -157,7 +170,7 @@ namespace CMS.Controllers
                     {
                         ex = ex.InnerException;
                     }
-                    message = "Deleted Unsuccessfuly";
+                    message = "Deleted Unsuccessfully";
                 }
             }
             else

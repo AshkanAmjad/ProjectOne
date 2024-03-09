@@ -17,7 +17,7 @@ namespace Bussiness.Security
             }
         }
 
-        public Role GetRoleWithId(Guid roleId)
+        public Role GetRoleById(Guid roleId)
         {
             using(CMSContext context = new CMSContext())
             {

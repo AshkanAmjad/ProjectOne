@@ -199,16 +199,18 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\MemberSip\CustomMemberShipUser.cs" />
     <Compile Include="Models\MemberSip\CustomPrincipal.cs" />
     <Compile Include="Models\MemberSip\CustomSerializeModel.cs" />
+    <Compile Include="Models\Validation\EditUserViewModelValidator.cs" />
     <Compile Include="Models\Validation\LoginViewModelValidator.cs" />
     <Compile Include="Models\Validation\RoleViewModelValidator.cs" />
+    <Compile Include="Models\Validation\AddUserViewModelValidator.cs" />
     <Compile Include="Models\ValidatorFactory.cs" />
-    <Compile Include="Models\ViewModel\LoginViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\CustomMemberShip.cs" />
   </ItemGroup>
@@ -265,12 +267,16 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Role\Index1.cshtml" />
     <Content Include="Views\Role\Add.cshtml" />
     <Content Include="Views\Role\Edit.cshtml" />
     <Content Include="Views\Role\Delete.cshtml" />
     <Content Include="Views\Role\Index.cshtml" />
     <Content Include="Views\Role\Get.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Get.cshtml" />
+    <Content Include="Views\User\Add.cshtml" />
+    <Content Include="Views\User\Delete.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -288,6 +294,10 @@
     <ProjectReference Include="..\ClassLibrary1\Domain.csproj">
       <Project>{CA443066-376C-4E64-917A-571DCA27B0BC}</Project>
       <Name>Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ViewModels\ViewModels.csproj">
+      <Project>{336eb686-7fb3-4c1f-9035-7ca76826b2c0}</Project>
+      <Name>ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

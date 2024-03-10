@@ -94,7 +94,7 @@ namespace Bussiness.Security
                     UserName = model.UserName,
                     Email = model.Email,
                     Password = model.Password,
-                    IsActive = true
+                    IsActive = model.IsActive
                 };
                 using (CMSContext context = new CMSContext())
                 {

@@ -93,6 +93,33 @@
 <div id="table-box">
 </div>
 
+<div class="panel panel-default">
+    <div class="panel-body">
+        @(Html.Kendo().Grid<ViewModels.Models.Users.UserViewModel>()
+    .Name("grid")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.UserId);
+        columns.Bound(c => c.UserName);
+        columns.Bound(c => c.Email);
+    })
+    .HtmlAttributes(new { style = "height: 550px;" })
+    .Scrollable()
+    //.Groupable()
+    .Sortable()
+    .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(true)
+        .ButtonCount(5))
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Read(read => read.Action("FillUserGrid", "User"))
+        .PageSize(20)
+    )
+        )
+    </div>
+</div>
+
 <div id="operation-box" class="modal fade" role="dialog">
 </div>
 
@@ -107,7 +134,7 @@
     <script type="text/javascript">
         $(document).ready(function (e) {
             //init grid
-            gridLoad();
+            //gridLoad();
         });
 
         //refresh grid

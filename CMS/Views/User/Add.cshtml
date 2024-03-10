@@ -1,56 +1,68 @@
 ﻿@model CMS.Models.ViewModels.User.AddViewModel
 @{
     Layout = null;
+    var status = ViewBag.StatusStates != null
+                ? ViewBag.StatusStates as List<SelectListItem>
+                : new List<SelectListItem>();
 }
-    <div class="modal-dialog" id="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">
-                    <i class="fa fa-lg fa-plus icons"></i>
-                    <b>
-                        Add User Form
-                    </b>
-                </h4>
-            </div>
-            <div class="modal-body">
-                @using (Html.BeginForm("Add", "User", FormMethod.Post, new { id = "AddUserForm" }))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true)
-                    <table class="validation-table-custom">
-                        <tr>
-                            <td>@Html.LabelFor(u => u.UserName) &nbsp; : &nbsp;</td>
-                            <td>@Html.TextBoxFor(u => u.UserName, new { @class = "form-control", @placeholder = "Enter Your User Name ..." })</td>
-                            <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(u => u.UserName, null, new { @class = "text-danger" })</td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(u => u.Password) &nbsp; : &nbsp;</td>
-                            <td>@Html.TextBoxFor(u => u.Password, new { type="password", @class = "form-control", @placeholder = "Enter Your Password ..." })</td>
-                            <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(u => u.Password, null, new { @class = "text-danger" })</td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(u => u.ConfirmPassword) &nbsp; : &nbsp;</td>
-                            <td>@Html.TextBoxFor(u => u.ConfirmPassword, new { type="password", @class = "form-control", @placeholder = "Enter Your Confirm Pass ..." })</td>
-                            <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(u => u.ConfirmPassword, null, new { @class = "text-danger" })</td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(u => u.Email) &nbsp; : &nbsp;</td>
-                            <td>@Html.TextBoxFor(u => u.Email, new { @class = "form-control", @placeholder = "Enter Your Email ..." })</td>
-                            <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(u => u.Email, null, new { @class = "text-danger" })</td>
-                        </tr>
-                    </table>
-                }
-            </div>
-            <div class="modal-footer modal-footer-custom">
-                <input class="btn btn-success" value="Add" type="button" id="add" />
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+<div class="modal-dialog" id="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">
+                <i class="fa fa-lg fa-plus icons"></i>
+                <b>
+                    Add User Form
+                </b>
+            </h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("Add", "User", FormMethod.Post, new { id = "AddUserForm" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                <table class="validation-table-custom">
+                    <tr>
+                        <td>@Html.LabelFor(u => u.UserName) &nbsp; : &nbsp;</td>
+                        <td>@Html.TextBoxFor(u => u.UserName, new { @class = "form-control", @placeholder = "Enter Your User Name ..." })</td>
+                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(u => u.UserName, null, new { @class = "text-danger" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(u => u.Password) &nbsp; : &nbsp;</td>
+                        <td>@Html.TextBoxFor(u => u.Password, new { type = "password", @class = "form-control", @placeholder = "Enter Your Password ..." })</td>
+                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(u => u.Password, null, new { @class = "text-danger" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(u => u.ConfirmPassword) &nbsp; : &nbsp;</td>
+                        <td>@Html.TextBoxFor(u => u.ConfirmPassword, new { type = "password", @class = "form-control", @placeholder = "Enter Your Confirm Pass ..." })</td>
+                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(u => u.ConfirmPassword, null, new { @class = "text-danger" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(u => u.Email) &nbsp; : &nbsp;</td>
+                        <td>@Html.TextBoxFor(u => u.Email, new { @class = "form-control", @placeholder = "Enter Your Email ..." })</td>
+                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(u => u.Email, null, new { @class = "text-danger" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(u => u.IsActive) &nbsp; : &nbsp; </td>
+                        <td>
+                            @(Html.Kendo()
+                            .DropDownListFor(x => x.IsActive)
+                            .OptionLabel("Select Your Status")
+                            .BindTo(status))
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+        <div class="modal-footer modal-footer-custom">
+            <input class="btn btn-success" value="Add" type="button" id="add" />
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
     </div>
+</div>
 
-    <script>
-    $(function () {
+<script>
+        $(function () {
         $("#add").off("click");
         $("#add").on("click", function (e) {
             var $form = $('#AddUserForm');
@@ -60,14 +72,15 @@
                 var password = $("#@Html.IdFor(x=>x.Password)").val();
                 var confirmPassword = $("#@Html.IdFor(x=>x.ConfirmPassword)").val();
                 var email = $("#@Html.IdFor(x=>x.Email)").val();
-
+                var activeStatus = $("#IsActive").data("kendoDropDownList").value();
                 var data = {
                     username: username,
                     password: password,
                     confirmPassword: confirmPassword,
-                    email: email
+                    email: email,
+                    isActive: activeStatus
                 };
-
+                
                 $("#add").prop('disabled', true);
                 $.post('@Url.Action("Add","User")', data)
                     .done(function (result) {
@@ -86,4 +99,4 @@
         });
     });
 
-    </script>
+</script>

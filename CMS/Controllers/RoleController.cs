@@ -3,6 +3,8 @@ using CMS.Models.Validation;
 using Domain.Data.Context;
 using Domain.Entities.Security.Model;
 using FluentValidation.Results;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -32,6 +34,17 @@ namespace CMS.Controllers
                 ViewBag.roleExistMessage = false;
                 return View(roles);
             };
+        }
+
+        public ActionResult FillRoleGrid(DataSourceRequest request)
+        {
+            var roleServices = new RoleServices();
+            var roles = roleServices.GetRoles().Select(x => new
+            {
+                RoleId = x.RoleId,
+                Title = x.Title
+            });
+            return Json(roles.ToDataSourceResult(request));
         }
 
         public ActionResult Add()
@@ -74,7 +87,7 @@ namespace CMS.Controllers
             {
                 message = "Data is not valid";
             }
-            return Json(new { success = success, message = message , JsonRequestBehavior.AllowGet });
+            return Json(new { success = success, message = message, JsonRequestBehavior.AllowGet });
         }
 
         public ActionResult Edit(Guid roleId)

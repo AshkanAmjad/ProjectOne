@@ -1,6 +1,10 @@
 ﻿using Bussiness.Security;
 using CMS.Models.ViewModels.User;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using ViewModels.Models.Users;
 
@@ -30,8 +34,29 @@ namespace CMS.Controllers
             }
         }
 
+        public ActionResult FillUserGrid(DataSourceRequest request)
+        {
+            var userServices = new UserServices();
+            var users = userServices.GetUers();
+
+            return Json(users.ToDataSourceResult(request));
+        }
+
         public ActionResult Add()
         {
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem
+            {
+                Text = "Disable",
+                Value = "False"
+            });
+            status.Add(new SelectListItem
+            {
+                Text = "Enable",
+                Value = "True"
+            });
+
+            ViewBag.StatusStates = status;
             return View();
         }
 

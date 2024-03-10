@@ -25,6 +25,22 @@ namespace CMS
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+
+            bundles.Add(new StyleBundle("~/Content/KendoUI").Include(
+                            "~/Content/Kendo/kendo.common.css",
+                            "~/Content/Kendo/kendo.rtl.css",
+                            "~/Content/Kendo/kendo.silver.css",
+                            "~/Content/kendo/kendo.bootstrap.css"
+                        ));
+
+            bundles.Add(new ScriptBundle("~/bundles/KendoUI").Include(
+                "~/Scripts/kendoUI/Jszip.js",
+                "~/Scripts/kendoUI/kendo.web.js",
+                "~/Scripts/kendoUI/kendo.aspnetmvc.js",
+                "~/Scripts/kendoUI/cultures/kendo.culture.fa.js",
+                "~/Scripts/kendoUI/cultures/kendo.fa-ir.js"
+            ));
         }
     }
 }

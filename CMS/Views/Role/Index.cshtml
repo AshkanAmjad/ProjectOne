@@ -83,11 +83,34 @@
     <i class="fa fa-plus btn-icons"></i>
     Add
 </div>
-
-
 <div id="table-box">
 </div>
 
+<div class="panel panel-default">
+    <div class="panel-body">
+        @(Html.Kendo().Grid<Domain.Entities.Security.Model.Role>()
+    .Name("grid")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.RoleId);
+        columns.Bound(c => c.Title);
+    })
+    .HtmlAttributes(new { style = "height: 550px;" })
+    .Scrollable()
+    //.Groupable()
+    .Sortable()
+    .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(true)
+        .ButtonCount(5))
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Read(read => read.Action("FillRoleGrid", "Role"))
+        .PageSize(20)
+    )
+        )
+    </div>
+</div>
 
 <div id="add-edit-delete-box" class="modal fade" role="dialog">
 </div>
@@ -104,7 +127,7 @@
     <script type="text/javascript">
         $(document).ready(function (e) {
             //init grid
-            gridLoad();
+            //gridLoad();
         });
 
         //create modal

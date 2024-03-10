@@ -161,7 +161,7 @@ namespace CMS.Controllers
                     if (result == true)
                     {
                         success = true;
-                        message = "Deleted Unsuccessfully";
+                        message = "Deleted Successfully";
                     }
                 }
                 catch (Exception ex)
@@ -177,7 +177,7 @@ namespace CMS.Controllers
             {
                 message = "Data is not valid";
             }
-            return Json(new { success = success, message = "Deleted Successfully", JsonRequestBehavior.AllowGet });
+            return Json(new { success = success, message = message, JsonRequestBehavior.AllowGet });
 
         }
     }

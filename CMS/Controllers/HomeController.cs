@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using ViewModels.Models.Users;
+using ViewModels.Models.User;
 
 namespace CMS.Controllers
 {

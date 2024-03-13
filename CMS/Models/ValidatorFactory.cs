@@ -1,10 +1,12 @@
 ﻿using CMS.Models.Validation;
 using CMS.Models.ViewModel;
-using CMS.Models.ViewModels.User;
 using Domain.Entities.Security.Model;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
+using ViewModels.Models.Article;
+using ViewModels.Models.Category;
+
 namespace CMS.Models
 {
     public class ValidatorFactory : ValidatorFactoryBase
@@ -15,8 +17,12 @@ namespace CMS.Models
         {
             validators.Add(typeof(IValidator<LoginViewModel>), new LoginViewModelValidator());
             validators.Add(typeof(IValidator<Role>), new RoleViewModelValidator());
-            validators.Add(typeof(IValidator<AddViewModel>), new AddUserViewModelValidator());
-            validators.Add(typeof(IValidator<EditViewModel>), new EditUserViewModelValidator());
+            validators.Add(typeof(IValidator<ViewModels.User.AddViewModel>), new AddUserViewModelValidator());
+            validators.Add(typeof(IValidator<ViewModels.User.EditViewModel>), new EditUserViewModelValidator());
+            validators.Add(typeof(IValidator<AddAritcleViewModel>), new AddArticleViewModelValidatior()) ;
+            validators.Add(typeof(IValidator<EditArticleViewModel>), new EditArticleViewModelValidatior());
+            validators.Add(typeof(IValidator<CategoryViewModel>), new CategoryViewMdelValidator());
+
         }
 
         public override IValidator CreateInstance(Type validatorType)

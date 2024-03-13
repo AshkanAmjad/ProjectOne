@@ -200,6 +200,8 @@
     <Compile Include="App_Start\FontAwesomeBundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ArticleController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -209,6 +211,9 @@
     <Compile Include="Models\MemberSip\CustomMemberShipUser.cs" />
     <Compile Include="Models\MemberSip\CustomPrincipal.cs" />
     <Compile Include="Models\MemberSip\CustomSerializeModel.cs" />
+    <Compile Include="Models\Validation\AddArticleViewModelValidatior.cs" />
+    <Compile Include="Models\Validation\CategoryViewMdelValidator.cs" />
+    <Compile Include="Models\Validation\EditArticleViewModelValidatior.cs" />
     <Compile Include="Models\Validation\EditUserViewModelValidator.cs" />
     <Compile Include="Models\Validation\LoginViewModelValidator.cs" />
     <Compile Include="Models\Validation\RoleViewModelValidator.cs" />
@@ -272,6 +277,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include=".editorconfig" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -314,6 +320,10 @@
     <Content Include="Views\User\Add.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\Article\Index.cshtml" />
+    <Content Include="Views\Category\Index.cshtml" />
+    <Content Include="Views\Article\Add.cshtml" />
+    <Content Include="Views\Article\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

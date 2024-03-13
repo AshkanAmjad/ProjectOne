@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViewModels.Models.Users
+namespace ViewModels.Models.User
 {
     public class DeleteViewModel
     {

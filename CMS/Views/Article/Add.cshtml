@@ -1,0 +1,97 @@
+﻿@model ViewModels.Models.Article.AddAritcleViewModel
+@{
+    Layout = null;
+    var categories = ViewBag.categories != null
+                ? ViewBag.categories as List<SelectListItem>
+                : new List<SelectListItem>();
+}
+
+<div class="modal-dialog" id="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">
+                <i class="fa fa-lg fa-plus icons"></i>
+                <b>
+                    Add Article Form
+                </b>
+            </h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("Add", "Article", FormMethod.Post, new { id = "AddArticleForm" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                @*@Html.HiddenFor(m=>m.AuthorId)*@
+
+                <table class="validation-table-custom">
+                    <tr>
+                        <td>@Html.LabelFor(a => a.Title) &nbsp; : &nbsp;</td>
+                        <td>@Html.TextBoxFor(a => a.Title, new { @class = "form-control", @placeholder = "Enter Title Article ..." })</td>
+                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.Title, null, new { @class = "text-danger" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(a => a.Content) &nbsp; : &nbsp;</td>
+                        <td>@Html.TextAreaFor(a => a.Content, new { @class = "form-control", @placeholder = "Enter Article Content ..." })</td>
+                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.Content, null, new { @class = "text-danger" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.Label("Category") &nbsp; : &nbsp;</td>
+                        <td>
+                            @(Html.Kendo().MultiSelect()
+                            .Name("multiSelect")
+                            .Placeholder("Select Category ...")
+                            .BindTo(categories))
+                        </td>
+                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.CategoryId, null, new { @class = "text-danger" })</td>
+                    </tr>
+                </table>
+            }
+        </div>
+        <div class="modal-footer modal-footer-custom">
+            <input class="btn btn-success" value="Add" type="button" id="add" />
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+        $(function () {
+        $("#add").off("click");
+        $("#add").on("click", function (e) {
+            var $form = $('#AddArticleForm');
+            $.validator.unobtrusive.parse($form);
+            if ($form.valid()) {
+                var title = $("#@Html.IdFor(x=>x.Title)").val();
+                var content = $("#@Html.IdFor(x=>x.Content)").val();
+                var categoryId = $("#multiSelect").data("kendoMultiSelect").value();
+                if (categoryId.length==0) {
+                    alert("Category is Required");
+                    return
+                }
+                var data = {
+                    title: title,
+                    content: content,
+                    categoryId: categoryId,
+                };
+
+
+                $("#add").prop('disabled', true);
+                $.post('@Url.Action("Add","Article")', data)
+                    .done(function (result) {
+                        if (result.success) {
+                            gridLoad();
+                            $("#operation-box").modal("toggle");
+                            alert(result.message);
+                        }
+                        else {
+                            alert(result.message);
+                        }
+                    }).always(function () {
+                        $("#add").prop('disabled', false);
+                    });
+            }
+        });
+    });
+</script>

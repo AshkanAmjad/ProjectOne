@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using ViewModels.Models.Users;
+using ViewModels.Models.User;
 
 namespace CMS.Controllers
 {
@@ -102,7 +102,6 @@ namespace CMS.Controllers
         {
             if(userId == Guid.Empty)
             {
-                return HttpNotFound();
             }
             var userServices = new UserServices();
             var user = userServices.GetUserByIdForEdit(userId);
@@ -195,7 +194,7 @@ namespace CMS.Controllers
                     {
                         ex = ex.InnerException;
                     }
-                    message = "Deleted Unsuccessfully";
+                    message = "Deleted Unsuccessfully" + ex.Message;
                 }
             }
             else

@@ -1,4 +1,5 @@
 ﻿using Domain.Entites.Portal.Model;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Domain.Entities.Portal.Mapping
@@ -11,6 +12,7 @@ namespace Domain.Entities.Portal.Mapping
             this.HasKey(k => k.CategoryId);
             this.Property(t => t.Title).IsRequired().HasMaxLength(100);
             this.Property(a => a.IsActive).IsRequired();
+            this.Property(k => k.CategoryId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }
 }

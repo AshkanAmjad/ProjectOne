@@ -5,7 +5,7 @@ using Domain.Entites.Security.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ViewModels.Models.Users;
+using ViewModels.Models.User;
 
 namespace Bussiness.Security
 {
@@ -56,9 +56,6 @@ namespace Bussiness.Security
                                             IsActive = x.IsActive
                                         }).FirstOrDefault();
                 return user;
-            }
-            {
-
             }
         }
 
@@ -129,7 +126,7 @@ namespace Bussiness.Security
                 } 
             }
             message = checkMessage;
-            return true;
+            return false;
         }
 
         public bool Delete(DeleteViewModel model)

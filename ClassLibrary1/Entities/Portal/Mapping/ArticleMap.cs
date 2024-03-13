@@ -1,4 +1,5 @@
 ﻿using Domain.Entites.Portal.Model;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Domain.Entities.Portal.Mapping
@@ -16,6 +17,7 @@ namespace Domain.Entities.Portal.Mapping
             this.Property(t => t.Title).IsRequired().HasMaxLength(100);
             this.Property(c => c.Content).IsRequired();
             this.Property(d => d.PublishDate).IsRequired();
+            this.Property(d => d.ArticleId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }
 }

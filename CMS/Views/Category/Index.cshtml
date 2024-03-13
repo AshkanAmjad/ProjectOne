@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Display Categories"; ;
+}
+<div class="panel panel-default">
+    <div class="panel-body">
+        @(Html.Kendo().Grid<ViewModels.Models.Category.CategoryViewModel>()
+            .Name("grid")
+            .Columns(columns =>
+            {
+                columns.Bound(c => c.Title);
+                columns.Bound(c => c.IsActive);
+                columns.Command(command => { command.Edit(); command.Destroy(); }).Width(200);
+            })
+            .ToolBar(toolBar => toolBar.Create())
+    .Editable(editTable => editTable.Mode(GridEditMode.InLine).ConfirmDelete("Continue to Delete this record?").DisplayDeleteConfirmation("Continue to delete this record?"))
+        .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(true)
+        .ButtonCount(5))
+    //.Groupable()
+    .Sortable()
+    .Scrollable()
+    .HtmlAttributes(new { style = "height: 400px;" })
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(20)
+        .Events(events => events.Error("error_handler"))
+        .Model(model => model.Id(a => a.CategoryId))
+        .Create(create => create.Action("FillCategoryCreate", "Category"))
+        .Read(read => read.Action("FillCategoryGrid", "Category"))
+        .Update(update => update.Action("FillCategoryUpdate", "Category"))
+        .Destroy(destroy => destroy.Action("FillCategoryDestroy", "Category"))
+    )
+        )
+    </div>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Error:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+    </script>
+}

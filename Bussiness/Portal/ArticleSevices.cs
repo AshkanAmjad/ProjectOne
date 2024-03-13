@@ -27,7 +27,6 @@ namespace Bussiness.Security
                 return users;
             }
         }
-
         public EditArticleViewModel GetArticleByIdForEdit(int articleId)
         {
             using (CMSContext context = new CMSContext())
@@ -38,12 +37,11 @@ namespace Bussiness.Security
                     {
                         ArticleId = x.ArticleId,
                         Title = x.Title,
-                        Content=x.Content,
+                        Content = x.Content,
                     }).FirstOrDefault();
                 return article;
             }
         }
-
         public List<CategoryViewModel> GetCategories()
         {
             using (CMSContext context = new CMSContext())
@@ -57,7 +55,6 @@ namespace Bussiness.Security
                 return categories;
             }
         }
-
         public bool Similarity(string title, int artileId, out string message)
         {
             using (CMSContext context = new CMSContext())
@@ -83,7 +80,7 @@ namespace Bussiness.Security
                     Content = model.Content,
                     PublishDate = DateTime.Now,
                     AuthorId = Guid.Parse("5ca717ac-7ccf-454b-90dd-17cbaf732464")
-            };
+                };
                 using (CMSContext context = new CMSContext())
                 {
                     context.Articles.Add(article);
@@ -109,7 +106,6 @@ namespace Bussiness.Security
             message = checkMessage;
             return false;
         }
-
         public bool Edit(ArticleViewModel model, out string message)
         {
             string checkMessage = "";

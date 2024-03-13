@@ -147,7 +147,6 @@ namespace CMS.Controllers
         [HttpPost]
         public ActionResult Delete(DataSourceRequest request, ArticleViewModel article)
         {
-
             if (article != null)
             {
                 var articleServices = new ArticleSevices();

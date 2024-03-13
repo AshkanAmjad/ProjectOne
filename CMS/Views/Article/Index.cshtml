@@ -54,9 +54,8 @@
         .Refresh(true)
         .PageSizes(true)
         .ButtonCount(5))
-    //.Selectable(select => select
-    //    .Mode(GridSelectionMode.Single))
-    //.Groupable()
+    .Selectable(select => select
+        .Mode(GridSelectionMode.Single))
     .Sortable()
     .Scrollable()
     .HtmlAttributes(new { style = "height: 400px;" })
@@ -114,11 +113,14 @@
             });
         });
 
-        edit
+        //edit
         $(document).off('click', '#editBtn');
         $(document).on('click', '#editBtn', function (e) {
             e.preventDefault();
-            var id = $(this).data("articleid");
+            
+            var grid = $("#grid").data("kendoGrid");  
+            var selectedItem = grid.dataItem(grid.select());
+            var id = selectedItem.ArticleId;
             $.get(_editUrl, { userId: id }).done(function (result) {
                 $("#operation-box").html(result);
                 $("#operation-box").modal("show");

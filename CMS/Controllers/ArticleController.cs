@@ -13,7 +13,6 @@ namespace CMS.Controllers
 {
     public class ArticleController : Controller
     {
-        // GET: Article
         public ActionResult Index()
         {
             return View();
@@ -85,7 +84,7 @@ namespace CMS.Controllers
             return Json(new { success = success, message = message, JsonRequestBehavior.AllowGet });
         }
 
-        public ActionResult Edit(int artcleId)
+        public ActionResult Edit(int articleId)
         {
             using (CMSContext context = new CMSContext())
             {
@@ -97,17 +96,17 @@ namespace CMS.Controllers
                 }).ToList();
                 ViewBag.categories = categories;
             }
-            if(artcleId == null)
+            if(articleId == null)
             {
                 return HttpNotFound();
             }
             var articleServices = new ArticleSevices();
-            var article = articleServices.GetArticleByIdForEdit(artcleId);
+            var article = articleServices.GetArticleByIdForEdit(articleId);
             return View(article);
         }
 
         [HttpPost]
-        public ActionResult Edit(ArticleViewModel article)
+        public ActionResult Edit(EditArticleViewModel article)
         {
             bool success = false;
             var message = "Updated unsuccessfully";

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace CMS.Models.Validation
 {
-    public class AddUserViewModelValidator : AbstractValidator<AddViewModel>
+    public class AddUserViewModelValidator : AbstractValidator<AddUserViewModel>
     {
         public AddUserViewModelValidator()
         {

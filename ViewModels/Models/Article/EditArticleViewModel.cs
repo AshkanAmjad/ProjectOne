@@ -11,7 +11,7 @@ namespace ViewModels.Models.Article
         public int ArticleId { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
-        public Array CategoryId { get; set; }
+        public int[] CategoryIds { get; set; }
         public DateTime PublishDate { get; set; }
     }
 }

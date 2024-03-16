@@ -20,7 +20,7 @@
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
                 @Html.HiddenFor(i => i.UserId)
-
+                @Html.HiddenFor(u => u.UserName)
                 <table class="validation-table-custom">
                     <tr>
                         <td>@Html.LabelFor(u => u.Password) &nbsp; : &nbsp;</td>
@@ -55,7 +55,7 @@
 <script>
     $(function () {
 
-        
+
 
         $("#edit").off("click");
         $("#edit").on("click", function (e) {
@@ -64,25 +64,24 @@
             $.validator.unobtrusive.parse($form);
             if ($form.valid()) {
                 var userId = $("#@Html.IdFor(x=>x.UserId)").val();
+                var userName = $("#@Html.IdFor(x=>x.UserName)").val();
                 var password = $("#@Html.IdFor(x=>x.Password)").val();
                 var confirmPassword = $("#@Html.IdFor(x=>x.ConfirmPassword)").val();
                 var email = $("#@Html.IdFor(x=>x.Email)").val();
                 var isActive = $('#@Html.IdFor(x=>x.IsActive)')[0].checked
-
-//                 // Check #x
-//$( "#x") .prop( "checked", true ;
- 
-//// Uncheck #x
-//                $("#x").prop("checked", false) ;
-
-
+                // Check #x
+                //$( "#x") .prop( "checked", true ;
+                // Uncheck #x
+                // $("#x").prop("checked", false) ;
                 var data = {
                     userId: userId,
                     password: password,
+                    userName: userName,
                     confirmPassword: confirmPassword,
                     email: email,
                     isActive: isActive
                 };
+
 
                 $("#edit").prop('disabled', true);
                 $.post('@Url.Action("Edit","User")', data)

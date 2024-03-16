@@ -39,6 +39,10 @@ namespace Bussiness.Security
                         Title = x.Title,
                         Content = x.Content,
                     }).FirstOrDefault();
+
+                article.CategoryIds = context.ArticleCategories.Where(s => s.ArticleId == articleId)
+                                                                .Select(s => s.CategoryId)
+                                                                .ToArray();
                 return article;
             }
         }
@@ -106,7 +110,7 @@ namespace Bussiness.Security
             message = checkMessage;
             return false;
         }
-        public bool Edit(ArticleViewModel model, out string message)
+        public bool Edit(EditArticleViewModel model, out string message)
         {
             string checkMessage = "";
             if (Similarity(model.Title, model.ArticleId, out checkMessage) == false)
@@ -118,12 +122,69 @@ namespace Bussiness.Security
                     {
                         data.Title = model.Title;
                         data.Content = model.Content;
-                        context.SaveChanges();
                         message = "";
-                        return true;
-
                     }
-                    //var category = context.ArticleCategories.Where(c=>c.ArticleId==model.ArticleId)
+
+                    var articleCategories = context.ArticleCategories.Where(a => a.ArticleId == model.ArticleId)
+                                                                     .ToList();
+
+                    var articleCategoryIds = articleCategories.Select(s => s.CategoryId)
+                                                              .ToList();
+
+                    if (articleCategories.Any())
+                    {
+                        if (model.CategoryIds.Any())
+                        {
+                            var mustBeDeletes = articleCategoryIds.Except(model.CategoryIds);
+                            var mustBeAdds = model.CategoryIds.Except(articleCategoryIds);
+
+                            if (mustBeDeletes.Any())
+                            {
+                                var mustBeDeletedCategory = articleCategories.Where(c => mustBeDeletes.Contains(c.CategoryId))
+                                                                             .ToList();
+                                if (mustBeDeletedCategory.Any())
+                                {
+                                    context.ArticleCategories.RemoveRange(mustBeDeletedCategory);
+                                }
+                            }
+                            //foreach (var item in mustBeDelete)
+                            //{
+                            //    var mustBeDeletedCategory = context.ArticleCategories.Where(c => c.CategoryId == item).ToList();
+                            //    foreach (var cat in mustBeDeletedCategory)
+                            //    {
+                            //        context.ArticleCategories.Remove(cat);
+                            //    }
+                            //    context.SaveChanges();
+                            //}
+                            if (mustBeAdds.Any())
+                            {
+                                foreach (var item in mustBeAdds)
+                                {
+                                    ArticleCategory obj = new ArticleCategory()
+                                    {
+                                        CategoryId = item,
+                                        ArticleId = model.ArticleId
+                                    };
+                                    context.ArticleCategories.Add(obj);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var articles = context.ArticleCategories.Where(a => a.ArticleId == model.ArticleId).ToList();
+                            if (articles.Any())
+                            {
+                                context.ArticleCategories.RemoveRange(articles);
+                                ArticleCategory articleCategory = new ArticleCategory()
+                                {
+                                    ArticleId = model.ArticleId,
+                                    CategoryId = 0
+                                };
+                                context.ArticleCategories.Add(articleCategory);
+                            }
+                        }
+                        context.SaveChanges();
+                    }
                 }
             }
             message = checkMessage;

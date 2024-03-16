@@ -26,13 +26,13 @@ namespace Bussiness.Security
             }
         }
 
-        public DeleteViewModel GetUserByIdForDelete(Guid userId)
+        public DeleteUserViewModel GetUserByIdForDelete(Guid userId)
         {
             using (CMSContext context = new CMSContext())
             {
                 var user = context.Users.AsNoTracking()
                                         .Where(u => u.UserId == userId)
-                                        .Select(x => new DeleteViewModel
+                                        .Select(x => new DeleteUserViewModel
                                         {
                                             UserId = x.UserId,
                                             UserName = x.UserName
@@ -50,6 +50,7 @@ namespace Bussiness.Security
                                         .Select(x => new EditViewModel
                                         {
                                             UserId = x.UserId,
+                                            UserName=x.UserName,
                                             Password = x.Password,
                                             ConfirmPassword = x.Password,
                                             Email = x.Email,
@@ -59,18 +60,18 @@ namespace Bussiness.Security
             }
         }
 
-        public bool Similarity(string userName, string email, out string message)
+        public bool Similarity(string userId,string userName, string email, out string message)
         {
             using (CMSContext context = new CMSContext())
             {
-                bool checkUserName = context.Users.Where(u => u.UserName == userName).Any();
+                bool checkUserName = context.Users.Where(u => u.UserName == userName && u.UserId.ToString() != userId).Any();
                 if (checkUserName == true)
                 {
                     message = "Duplicated User Name";
                     return checkUserName;
                 }
 
-                bool checkEmail = context.Users.Where(u => u.Email == email).Any();
+                bool checkEmail = context.Users.Where(u => u.Email == email && u.UserName.ToString() != userName).Any();
                 if (checkEmail == true)
                 {
                     message = "Duplicated Email Address";
@@ -81,10 +82,10 @@ namespace Bussiness.Security
             }
         }
 
-        public bool Add(AddViewModel model, out string message)
+        public bool Add(AddUserViewModel model, out string message)
         {
             string checkMessage = "";
-            if (Similarity(model.UserName, model.Email, out checkMessage) == false)
+            if (Similarity( "" ,model.UserName , model.Email, out checkMessage) == false)
             {
                 User user = new User()
                 {
@@ -108,12 +109,12 @@ namespace Bussiness.Security
         public bool Edit(EditViewModel model, out string message)
         {
             string checkMessage = "";
-            if (Similarity(" ", model.Email, out checkMessage) == false)
+            if (Similarity(model.UserId.ToString() ,model.UserName , model.Email, out checkMessage) == false)
             {
                 using (CMSContext context = new CMSContext())
                 {
                     var data = context.Users.Where(u => u.UserId == model.UserId).FirstOrDefault();
-                    if(data != null)
+                    if (data != null)
                     {
                         data.UserId = model.UserId;
                         data.Password = model.Password;
@@ -123,13 +124,13 @@ namespace Bussiness.Security
                         message = "";
                         return true;
                     }
-                } 
+                }
             }
             message = checkMessage;
             return false;
         }
 
-        public bool Delete(DeleteViewModel model)
+        public bool Delete(UserViewModel model)
         {
             using (CMSContext context = new CMSContext())
             {
@@ -140,10 +141,7 @@ namespace Bussiness.Security
                     context.SaveChanges();
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
         }
 

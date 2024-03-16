@@ -85,77 +85,80 @@
     Users
 </div>
 <hr />
-<div class="btn btn-primary btn-sm add">
-    <i class="fa fa-plus icons"></i>
-    Add
-</div>
-
-<div id="table-box">
+<div id="operation-box" class="modal fade" role="dialog">
 </div>
 
 <div class="panel panel-default">
     <div class="panel-body">
-        @(Html.Kendo().Grid<ViewModels.Models.User.UserViewModel>()
+        @(Html.Kendo().Grid<ViewModels.Models.User.UserViewModel>
+    ()
     .Name("grid")
     .Columns(columns =>
     {
-        columns.Bound(c => c.UserId);
-        columns.Bound(c => c.UserName);
-        columns.Bound(c => c.Email);
+    columns.Bound(c => c.UserName);
+    columns.Bound(c => c.Email);
+    columns.Command(command => { command.Destroy(); }).Width(100);
     })
-    .HtmlAttributes(new { style = "height: 550px;" })
-    .Scrollable()
-    //.Groupable()
-    .Sortable()
+    .ToolBar(t =>
+    {
+    t.Custom().Text("Add").HtmlAttributes(new { @id = "addBtn" });
+    t.Custom().Text("Edit").HtmlAttributes(new { @id = "editBtn" });
+    })
+    .Editable(editTable => editTable.Mode(GridEditMode.InLine).ConfirmDelete("Continue to Delete this record?").DisplayDeleteConfirmation("Continue to delete this record?"))
     .Pageable(pageable => pageable
-        .Refresh(true)
-        .PageSizes(true)
-        .ButtonCount(5))
+             .Refresh(true)
+             .PageSizes(true)
+             .ButtonCount(5))
+    .Selectable(select => select
+             .Mode(GridSelectionMode.Single))
+    .Sortable()
+    .Scrollable()
+    .HtmlAttributes(new { style = "height: 550px;" })
     .DataSource(dataSource => dataSource
-        .Ajax()
-        .Read(read => read.Action("FillUserGrid", "User"))
-        .PageSize(20)
+              .Ajax()
+              .PageSize(20)
+              .Events(events => events.Error("error_handler"))
+              .Model(model => model.Id(u=>u.UserId))
+              .Read(read => read.Action("FillUserGrid", "User"))
+              .Destroy(destroy => destroy.Action("Delete", "User"))
     )
-        )
+    )
     </div>
-</div>
-
-<div id="operation-box" class="modal fade" role="dialog">
 </div>
 
 @section scripts
         {
     <script type="text/javascript">
-        var _userListUrl = '@Url.Action("Get","User")';
         var _addUrl = '@Url.Action("Add","User")';
         var _editUrl = '@Url.Action("Edit","User")';
-        var _deleteUrl = '@Url.Action("Delete","User")';
     </script>
     <script type="text/javascript">
-        $(document).ready(function (e) {
-            //init grid
-            //gridLoad();
-        });
-
-        //refresh grid
-        function gridLoad() {
-            $("#table-box").empty();
-            $.ajax({
-                url: _userListUrl,
-                type: "Get",
-                datatype: "json",
-                success: function (response) {
-                    $("#table-box").html(response);
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Error:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
         }
 
-        //create modal
-        $(".add").off("click");
-        $(".add").on("click", function () {
+        // Refresh
+        $(document).ready(function (e) {
+            gridLoad();
+        })
+        function gridLoad() {
+            $("#grid").data('kendoGrid').dataSource.read();
+        }
+
+        //create 
+        $("#addBtn").off("click");
+        $("#addBtn").on("click", function (e) {
+            e.preventDefault();
             $.get(_addUrl).done(function (result) {
                 $("#operation-box").html(result);
                 $("#operation-box").modal("show");
@@ -163,25 +166,17 @@
         });
 
         //edit modal
-        $(document).off('click', '.edit');
-        $(document).on('click', '.edit', function (e) {
+        $(document).off('click', '#editBtn');
+        $(document).on('click', '#editBtn', function (e) {
             e.preventDefault();
-            var id = $(this).data("userid");
+            var grid = $("#grid").data("kendoGrid");  
+            var selectedItem = grid.dataItem(grid.select());
+            debugger
+            var id = selectedItem.UserId;
             $.get(_editUrl, { userId: id }).done(function (result) {
                 $("#operation-box").html(result);
                 $("#operation-box").modal("show");
             });
         })
-
-        //Delete Modal
-        $(document).off('click', '.delete');
-        $(document).on('click', '.delete', function (e) {
-            var id = $(this).data("userid")
-            $.get(_deleteUrl, { userId: id }).done(function (result) {
-                $("#operation-box").html(result);
-                $("#operation-box").modal("show");
-            });
-        });
-
     </script>
 }

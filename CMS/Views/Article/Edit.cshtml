@@ -21,6 +21,7 @@
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
+                @Html.HiddenFor(s=>s.ArticleId)
                 <table class="validation-table-custom">
                     <tr>
                         <td>@Html.LabelFor(a => a.Title) &nbsp; : &nbsp;</td>
@@ -35,12 +36,12 @@
                     <tr>
                         <td>@Html.Label("Category") &nbsp; : &nbsp;</td>
                         <td>
-                            @(Html.Kendo().MultiSelect()
-                            .Name("multiSelect")
+                            @(Html.Kendo().MultiSelectFor(s=>s.CategoryIds)
+                            .Name("CategoryIds")
                             .Placeholder("Select Category ...")
                             .BindTo(categories))
                         </td>
-                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.CategoryId, null, new { @class = "text-danger" })</td>
+                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.CategoryIds, null, new { @class = "text-danger" })</td>
                     </tr>
                 </table>
             }
@@ -60,15 +61,17 @@
             if ($form.valid()) {
                 var title = $("#@Html.IdFor(x=>x.Title)").val();
                 var content = $("#@Html.IdFor(x=>x.Content)").val();
-                var categoryId = $("#multiSelect").data("kendoMultiSelect").value();
-                if (categoryId.length==0) {
+                var articleId = $("#@Html.IdFor(x=>x.ArticleId)").val();
+                var categoryIds = $("#CategoryIds").data("kendoMultiSelect").value();
+                if (categoryIds.length==0) {
                     alert("Category is Required");
                     return
                 }
                 var data = {
                     title: title,
                     content: content,
-                    categoryId: categoryId,
+                    categoryIds: categoryIds,
+                    articleId :articleId
                 };
 
 

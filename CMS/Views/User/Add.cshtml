@@ -1,4 +1,4 @@
-﻿@model CMS.Models.ViewModels.User.AddViewModel
+﻿@model CMS.Models.ViewModels.User.AddUserViewModel
 @{
     Layout = null;
     var status = ViewBag.StatusStates != null
@@ -73,6 +73,10 @@
                 var confirmPassword = $("#@Html.IdFor(x=>x.ConfirmPassword)").val();
                 var email = $("#@Html.IdFor(x=>x.Email)").val();
                 var activeStatus = $("#IsActive").data("kendoDropDownList").value();
+                if (activeStatus == "") {
+                    alert("Active Status is Required");
+                    return
+                }
                 var data = {
                     username: username,
                     password: password,

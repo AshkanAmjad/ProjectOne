@@ -17,22 +17,22 @@ namespace CMS.Controllers
             return View();
         }
 
-        public ActionResult Get()
-        {
-            var userServices = new UserServices();
-            var users = userServices.GetUers();
+        //public ActionResult Get()
+        //{
+        //    var userServices = new UserServices();
+        //    var users = userServices.GetUers();
 
-            if (users.Count < 0)
-            {
-                ViewBag.userExistMessage = true;
-                return View();
-            }
-            else
-            {
-                ViewBag.userExistMessage = false;
-                return View(users);
-            }
-        }
+        //    if (users.Count < 0)
+        //    {
+        //        ViewBag.userExistMessage = true;
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        ViewBag.userExistMessage = false;
+        //        return View(users);
+        //    }
+        //}
 
         public ActionResult FillUserGrid(DataSourceRequest request)
         {
@@ -61,7 +61,7 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(AddViewModel user)
+        public ActionResult Add(AddUserViewModel user)
         {
             bool success = false;
             var message = "Recorded unsuccessfully";
@@ -102,6 +102,7 @@ namespace CMS.Controllers
         {
             if(userId == Guid.Empty)
             {
+                return HttpNotFound();
             }
             var userServices = new UserServices();
             var user = userServices.GetUserByIdForEdit(userId);
@@ -119,7 +120,7 @@ namespace CMS.Controllers
             bool success = false;
             var message = "Updated unsuccessfully";
             var checkMessage = "";
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && model != null)
             {
                 try
                 {
@@ -153,56 +154,64 @@ namespace CMS.Controllers
 
         }
 
-        public ActionResult Delete(Guid userId)
-        {
-            if (userId == Guid.Empty)
-            {
-                return HttpNotFound();
-            }
-            var userServices = new UserServices();
-            var user = userServices.GetUserByIdForDelete(userId);
-            if(user == null)
-            {
-                return HttpNotFound();
-            }
+        //public ActionResult Delete(Guid userId)
+        //{
+        //    if (userId == Guid.Empty)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    var userServices = new UserServices();
+        //    var user = userServices.GetUserByIdForDelete(userId);
+        //    if(user == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
 
-            return View(user);
+        //    return View(user);
+        //}
 
-
-        }
-
+        //[HttpPost]
+        //public ActionResult Delete(DeleteViewModel model)
+        //{
+        //    bool success = false;
+        //    var message = "Deleted unsuccessfully";
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            var userServices = new UserServices();
+        //            bool result = userServices.Delete(model);
+        //            if (result == true)
+        //            {
+        //                success = true;
+        //                message = "Deleted Successfully";
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            while (ex.InnerException != null)
+        //            {
+        //                ex = ex.InnerException;
+        //            }
+        //            message = "Deleted Unsuccessfully" + ex.Message;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        message = "Data is not valid";
+        //    }
+        //    return Json(new { success = success, message = message, JsonRequestBehavior.AllowGet });
+        //}
         [HttpPost]
-        public ActionResult Delete(DeleteViewModel model)
+        public ActionResult Delete(DataSourceRequest request, UserViewModel user)
         {
-            bool success = false;
-            var message = "Deleted unsuccessfully";
-            if (ModelState.IsValid)
+            if (user != null)
             {
-                try
-                {
-                    var userServices = new UserServices();
-                    bool result = userServices.Delete(model);
-                    if (result == true)
-                    {
-                        success = true;
-                        message = "Deleted Successfully";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    while (ex.InnerException != null)
-                    {
-                        ex = ex.InnerException;
-                    }
-                    message = "Deleted Unsuccessfully" + ex.Message;
-                }
+                var userServices = new UserServices();
+                bool result = userServices.Delete(user);
             }
-            else
-            {
-                message = "Data is not valid";
-            }
-            return Json(new { success = success, message = message, JsonRequestBehavior.AllowGet });
-
+            return Json(new[] { user }.ToDataSourceResult(request, ModelState));
         }
+
     }
 }

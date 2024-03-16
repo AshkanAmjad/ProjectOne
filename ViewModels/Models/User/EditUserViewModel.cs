@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CMS.Models.ViewModels.User
 {
-    public class AddViewModel
+    public class EditViewModel
     {
         public Guid UserId { get; set; }
         public string UserName { get; set; }
@@ -13,6 +13,6 @@ namespace CMS.Models.ViewModels.User
         public string ConfirmPassword { get; set; }
         public string Email { get; set; }
         public bool IsActive { get; set; }
-
     }
 }
+

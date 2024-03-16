@@ -47,7 +47,7 @@
     .ToolBar(t =>
     {
         t.Custom().Text("Add").HtmlAttributes(new { @id = "addBtn" });
-        t.Custom().Text("edit").HtmlAttributes(new { @id = "editBtn" });
+        t.Custom().Text("Edit").HtmlAttributes(new { @id = "editBtn" });
     })
     .Editable(editTable => editTable.Mode(GridEditMode.InLine).ConfirmDelete("Continue to Delete this record?").DisplayDeleteConfirmation("Continue to delete this record?"))
     .Pageable(pageable => pageable
@@ -117,11 +117,10 @@
         $(document).off('click', '#editBtn');
         $(document).on('click', '#editBtn', function (e) {
             e.preventDefault();
-            
             var grid = $("#grid").data("kendoGrid");  
             var selectedItem = grid.dataItem(grid.select());
             var id = selectedItem.ArticleId;
-            $.get(_editUrl, { userId: id }).done(function (result) {
+            $.get(_editUrl, { articleId: id }).done(function (result) {
                 $("#operation-box").html(result);
                 $("#operation-box").modal("show");
             });

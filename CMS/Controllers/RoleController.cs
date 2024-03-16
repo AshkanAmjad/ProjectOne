@@ -137,48 +137,50 @@ namespace CMS.Controllers
             return Json(new { success = success, message = message, JsonRequestBehavior.AllowGet });
         }
 
-        public ActionResult Delete(Guid roleId)
-        {
-            if (roleId != null)
-            {
-                var roleServices = new RoleServices();
-                return View(roleServices.GetRoleById(roleId));
-            }
-            return HttpNotFound();
-        }
+
+        //[HttpPost]
+        //public ActionResult Delete(Guid roleId, int service = 0)
+        //{
+        //    bool success = false;
+        //    var message = "Deleted Unsuccessfully";
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            var roleServices = new RoleServices();
+        //            bool result = roleServices.Delete(roleId);
+        //            if (result == true)
+        //            {
+        //                success = true;
+        //                message = "Deleted Successfully";
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            while (ex.InnerException != null)
+        //            {
+        //                ex = ex.InnerException;
+        //            }
+        //            message = "Deleted Unsuccessfuly";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        message = "Data is not valid";
+        //    }
+        //    return Json(new { success = success, message = "Deleted Successfully", JsonRequestBehavior.AllowGet });
+
+        //}
 
         [HttpPost]
-        public ActionResult Delete(Guid roleId, int service = 0)
+        public ActionResult Delete(DataSourceRequest request, Guid roleId)
         {
-            bool success = false;
-            var message = "Deleted Unsuccessfully";
-            if (ModelState.IsValid)
+            if (roleId != Guid.Empty)
             {
-                try
-                {
-                    var roleServices = new RoleServices();
-                    bool result = roleServices.Delete(roleId);
-                    if (result == true)
-                    {
-                        success = true;
-                        message = "Deleted Successfully";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    while (ex.InnerException != null)
-                    {
-                        ex = ex.InnerException;
-                    }
-                    message = "Deleted Unsuccessfuly";
-                }
+                var roleServices = new RoleServices();
+                bool result = roleServices.Delete(roleId);
             }
-            else
-            {
-                message = "Data is not valid";
-            }
-            return Json(new { success = success, message = "Deleted Successfully", JsonRequestBehavior.AllowGet });
-
+            return Json(new[] {""}.ToDataSourceResult(request, ModelState));
         }
     }
 }

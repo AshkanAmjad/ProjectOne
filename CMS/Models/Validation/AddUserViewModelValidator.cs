@@ -13,11 +13,14 @@ namespace CMS.Models.Validation
         {
             RuleFor( u => u.UserName).NotEmpty()
                                      .WithMessage("User Name is Required.")
-                                     .MaximumLength(10).WithMessage("The maximum length of the user name is 10 characters.");
+                                     .MaximumLength(10)
+                                     .WithMessage("The maximum length of the user name is 10 characters.");
           
             RuleFor(u => u.Password).NotEmpty()
-                                    .WithMessage("Password is Required.");
-           
+                                    .WithMessage("Password is Required.")
+                                    .MaximumLength(10)
+                                    .WithMessage("The maximum length of the password is 10 characters."); 
+
             RuleFor(u => u.ConfirmPassword).Equal(p=>p.Password)
                                            .WithMessage("Password does not match.");
            

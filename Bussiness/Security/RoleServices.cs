@@ -77,21 +77,36 @@ namespace Bussiness.Security
             }
         }
 
+        //public bool Delete(Guid roleId)
+        //{
+        //    using (CMSContext context = new CMSContext())
+        //    {
+        //        var data = context.Roles.Where(r => r.RoleId == roleId).FirstOrDefault();
+        //        if(data != null)
+        //        {
+        //            context.Roles.Remove(data);
+        //            context.SaveChanges();
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //}
+
         public bool Delete(Guid roleId)
         {
             using (CMSContext context = new CMSContext())
             {
-                var data = context.Roles.Where(r => r.RoleId == roleId).FirstOrDefault();
-                if(data != null)
+                var data = context.Roles.Where(u => u.RoleId == roleId).FirstOrDefault();
+                if (data != null)
                 {
                     context.Roles.Remove(data);
                     context.SaveChanges();
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
         }
 

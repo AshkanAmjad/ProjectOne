@@ -92,20 +92,24 @@
     .Name("grid")
     .Columns(columns =>
     {
-        columns.Bound(c => c.RoleId);
         columns.Bound(c => c.Title);
+        columns.Command(command => { command.Destroy(); }).Width(100);
+
     })
     .HtmlAttributes(new { style = "height: 550px;" })
     .Scrollable()
     //.Groupable()
     .Sortable()
+    .Editable(editTable => editTable.Mode(GridEditMode.InLine).ConfirmDelete("Continue to Delete this record?").DisplayDeleteConfirmation("Continue to delete this record?"))
     .Pageable(pageable => pageable
         .Refresh(true)
         .PageSizes(true)
         .ButtonCount(5))
     .DataSource(dataSource => dataSource
         .Ajax()
+        .Model(model => model.Id(r => r.RoleId))
         .Read(read => read.Action("FillRoleGrid", "Role"))
+        .Destroy(destroy => destroy.Action("Delete", "Role"))
         .PageSize(20)
     )
         )
@@ -150,31 +154,31 @@
             });
         })
 
-            //delete modal
-            $(document).off('click', '.btn-index-delete-role');
-            $(document).on('click', '.btn-index-delete-role', function (e) {
-                var id = $(this).data("roleid");
-                $.get(_deleteUrl, { roleId: id }).done(function (result) {
-                    $("#add-edit-delete-box").html(result);
-                    $("#add-edit-delete-box").modal("show");
-                });
+        //delete modal
+        $(document).off('click', '.btn-index-delete-role');
+        $(document).on('click', '.btn-index-delete-role', function (e) {
+            var id = $(this).data("roleid");
+            $.get(_deleteUrl, { roleId: id }).done(function (result) {
+                $("#add-edit-delete-box").html(result);
+                $("#add-edit-delete-box").modal("show");
             });
+        });
 
 
-            //refresh grid
-            function gridLoad() {
-                $("#table-box").empty();
-                $.ajax({
-                    url: _roleListUrl,
-                    type: 'GET',
-                    datatype: "json",
-                    success: function (response) {
-                        $("#table-box").html(response);
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
-            }
+        //refresh grid
+        function gridLoad() {
+            $("#table-box").empty();
+            $.ajax({
+                url: _roleListUrl,
+                type: 'GET',
+                datatype: "json",
+                success: function (response) {
+                    $("#table-box").html(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
     </script>
 }

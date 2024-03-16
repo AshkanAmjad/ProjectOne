@@ -7,9 +7,14 @@ namespace CMS.Models.Validation
     {
         public EditArticleViewModelValidatior()
         {
-            RuleFor(a => a.Title).NotNull().WithMessage("Title is Required");
-            RuleFor(a => a.Content).NotNull().WithMessage("Content is Required");
-            RuleFor(a => a.PublishDate).NotNull().WithMessage("Publish Date is Required");
+            RuleFor(a => a.Title).NotNull()
+                                 .WithMessage("Title is Required");
+         
+            RuleFor(a => a.Content).NotNull()
+                                   .WithMessage("Content is Required");
+          
+            RuleFor(a => a.PublishDate).NotNull()
+                                       .WithMessage("Publish Date is Required");
         }
     }
 }

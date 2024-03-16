@@ -7,8 +7,11 @@ namespace CMS.Models.Validation
     {
         public LoginViewModelValidator()
         {
-            RuleFor(x => x.UserName).NotEmpty().WithMessage("Please Enter Your User Name");
-            RuleFor(x => x.Password).NotEmpty().WithMessage("Please Enter Your Password");
+            RuleFor(x => x.UserName).NotEmpty()
+                                    .WithMessage("Please Enter Your User Name");
+           
+            RuleFor(x => x.Password).NotEmpty()
+                                    .WithMessage("Please Enter Your Password");
          }
     }
 }

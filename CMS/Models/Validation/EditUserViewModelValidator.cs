@@ -11,9 +11,14 @@ namespace CMS.Models.Validation
     {
         public EditUserViewModelValidator()
         {
-            RuleFor(u => u.Password).NotEmpty().WithMessage("Password is Required.");
-            RuleFor(u => u.ConfirmPassword).Equal(p => p.Password).WithMessage("Password does not match.");
-            RuleFor(u => u.Email).EmailAddress().WithMessage("Email is Invalid.");
+            RuleFor(u => u.Password).NotEmpty()
+                                    .WithMessage("Password is Required.");
+          
+            RuleFor(u => u.ConfirmPassword).Equal(p => p.Password)
+                                           .WithMessage("Password does not match.");
+         
+            RuleFor(u => u.Email).EmailAddress()
+                                 .WithMessage("Email is Invalid.");
         }
     }
 }

@@ -7,7 +7,8 @@ namespace CMS.Models.Validation
     {
         public RoleViewModelValidator()
         {
-            RuleFor(t => t.Title).NotEmpty().WithMessage("Title is Required.");
+            RuleFor(t => t.Title).NotEmpty()
+                                 .WithMessage("Title is Required.");
         }
     }
 }

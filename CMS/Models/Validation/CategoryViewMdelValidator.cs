@@ -11,7 +11,8 @@ namespace CMS.Models.Validation
     {
         public CategoryViewMdelValidator()
         {
-            RuleFor(a => a.Title).NotNull().WithMessage("Title is Required");
+            RuleFor(a => a.Title).NotNull()
+                                 .WithMessage("Title is Required");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Bussiness.Security;
 using CMS.Models.ViewModels.User;
+using Domain.Data.Context;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
@@ -55,8 +56,18 @@ namespace CMS.Controllers
                 Text = "Enable",
                 Value = "True"
             });
-
             ViewBag.StatusStates = status;
+
+            using (CMSContext context=new CMSContext())
+            {
+                var roles = context.Roles.Select(s => new SelectListItem
+                {
+                    Text = s.Title,
+                    Value = s.RoleId.ToString()
+                }).ToList();
+                ViewBag.roles = roles;
+            }
+
             return View();
         }
 

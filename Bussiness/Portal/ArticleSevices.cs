@@ -16,15 +16,32 @@ namespace Bussiness.Security
         {
             using (CMSContext context = new CMSContext())
             {
-                var users = context.Articles.AsNoTracking()
+                var articles = context.Articles.AsNoTracking()
                                         .Select(x => new ArticleViewModel
                                         {
                                             ArticleId = x.ArticleId,
                                             Title = x.Title,
                                             Content = x.Content,
+                                            Description=x.Description,
                                             PublishDate = x.PublishDate
                                         }).ToList();
-                return users;
+                return articles;
+            }
+        }
+        public IEnumerable<ArticleViewModel> GetArticle(int articleId)
+        {
+            using(CMSContext context=new CMSContext())
+            {
+                var article = context.Articles.AsNoTracking()
+                                              .Where(a => a.ArticleId == articleId)
+                                              .Select(x => new ArticleViewModel
+                                              {
+                                                  Title = x.Title,
+                                                  Content = x.Content,
+                                                  Description = x.Description,
+                                                  PublishDate=x.PublishDate
+                                              }).ToList();
+                return article;
             }
         }
         public EditArticleViewModel GetArticleByIdForEdit(int articleId)
@@ -37,6 +54,7 @@ namespace Bussiness.Security
                     {
                         ArticleId = x.ArticleId,
                         Title = x.Title,
+                        Description=x.Description,
                         Content = x.Content,
                     }).FirstOrDefault();
 
@@ -82,8 +100,9 @@ namespace Bussiness.Security
                 {
                     Title = model.Title,
                     Content = model.Content,
+                    Description=model.Description,
                     PublishDate = DateTime.Now,
-                    AuthorId = Guid.Parse("5ca717ac-7ccf-454b-90dd-17cbaf732464")
+                    AuthorId = Guid.Parse("4417cb6e-89cf-4147-865d-e5362a283aa4")
                 };
                 using (CMSContext context = new CMSContext())
                 {
@@ -122,6 +141,7 @@ namespace Bussiness.Security
                     {
                         data.Title = model.Title;
                         data.Content = model.Content;
+                        data.Description = model.Description;
                         message = "";
                     }
 
@@ -184,6 +204,9 @@ namespace Bussiness.Security
                             }
                         }
                         context.SaveChanges();
+                        message = "";
+                        return true;
+
                     }
                 }
             }

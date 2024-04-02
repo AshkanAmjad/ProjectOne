@@ -4,6 +4,10 @@
     var status = ViewBag.StatusStates != null
                 ? ViewBag.StatusStates as List<SelectListItem>
                 : new List<SelectListItem>();
+
+    var roles = ViewBag.roles != null
+        ? ViewBag.roles as List<SelectListItem>
+        : new List<SelectListItem>();
 }
 <div class="modal-dialog" id="modal">
     <div class="modal-content">
@@ -43,6 +47,15 @@
                         <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(u => u.Email, null, new { @class = "text-danger" })</td>
                     </tr>
                     <tr>
+                        <td>@Html.LabelFor(u=>u.RoleId) &nbsp; : &nbsp;</td>
+                        <td>
+                            @(Html.Kendo().MultiSelect()
+                            .Name("multiSelect")
+                            .Placeholder("Select Role ...")
+                            .BindTo(roles))
+                        </td>
+                    </tr>
+                    <tr>
                         <td>@Html.LabelFor(u => u.IsActive) &nbsp; : &nbsp; </td>
                         <td>
                             @(Html.Kendo()
@@ -72,16 +85,22 @@
                 var password = $("#@Html.IdFor(x=>x.Password)").val();
                 var confirmPassword = $("#@Html.IdFor(x=>x.ConfirmPassword)").val();
                 var email = $("#@Html.IdFor(x=>x.Email)").val();
+                var roleId = $("#multiSelect").data("kendoMultiSelect").value();
                 var activeStatus = $("#IsActive").data("kendoDropDownList").value();
                 if (activeStatus == "") {
                     alert("Active Status is Required");
                     return
+                }
+                if (roleId.length == 0) {
+                    alert("Role is Required");
+                    return;
                 }
                 var data = {
                     username: username,
                     password: password,
                     confirmPassword: confirmPassword,
                     email: email,
+                    roleId: roleId,
                     isActive: activeStatus
                 };
                 

@@ -22,28 +22,33 @@
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
                 @Html.HiddenFor(s=>s.ArticleId)
-                <table class="validation-table-custom">
-                    <tr>
-                        <td>@Html.LabelFor(a => a.Title) &nbsp; : &nbsp;</td>
-                        <td>@Html.TextBoxFor(a => a.Title, new { @class = "form-control", @placeholder = "Enter Title Article ..." })</td>
-                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.Title, null, new { @class = "text-danger" })</td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(a => a.Content) &nbsp; : &nbsp;</td>
-                        <td>@Html.TextAreaFor(a => a.Content, new { @class = "form-control", @placeholder = "Enter Article Content ..." })</td>
-                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.Content, null, new { @class = "text-danger" })</td>
-                    </tr>
-                    <tr>
-                        <td>@Html.Label("Category") &nbsp; : &nbsp;</td>
-                        <td>
-                            @(Html.Kendo().MultiSelectFor(s=>s.CategoryIds)
-                            .Name("CategoryIds")
-                            .Placeholder("Select Category ...")
-                            .BindTo(categories))
-                        </td>
-                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.CategoryIds, null, new { @class = "text-danger" })</td>
-                    </tr>
-                </table>
+            <table class="validation-table-custom">
+                <tr>
+                    <td>@Html.LabelFor(a => a.Title) &nbsp; : &nbsp;</td>
+                    <td>@Html.TextBoxFor(a => a.Title, new { @class = "form-control", @placeholder = "Enter Title Article ..." })</td>
+                    <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.Title, null, new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(a => a.Content) &nbsp; : &nbsp;</td>
+                    <td>@Html.TextAreaFor(a => a.Content, new { @class = "form-control", @placeholder = "Enter Article Content ..." })</td>
+                    <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.Content, null, new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(a => a.Description) &nbsp; : &nbsp;</td>
+                    <td>@Html.TextAreaFor(a => a.Description, new { @class = "form-control", @placeholder = "Enter Article Description ..." })</td>
+                    <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.Description, null, new { @class = "text-danger" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Category") &nbsp; : &nbsp;</td>
+                    <td>
+                        @(Html.Kendo().MultiSelectFor(s => s.CategoryIds)
+                        .Name("CategoryIds")
+                        .Placeholder("Select Category ...")
+                        .BindTo(categories))
+                    </td>
+                    <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.CategoryIds, null, new { @class = "text-danger" })</td>
+                </tr>
+            </table>
             }
         </div>
         <div class="modal-footer modal-footer-custom">
@@ -61,6 +66,7 @@
             if ($form.valid()) {
                 var title = $("#@Html.IdFor(x=>x.Title)").val();
                 var content = $("#@Html.IdFor(x=>x.Content)").val();
+                var description = $("#@Html.IdFor(x=>x.Description)").val();
                 var articleId = $("#@Html.IdFor(x=>x.ArticleId)").val();
                 var categoryIds = $("#CategoryIds").data("kendoMultiSelect").value();
                 if (categoryIds.length==0) {
@@ -70,6 +76,7 @@
                 var data = {
                     title: title,
                     content: content,
+                    description: description,
                     categoryIds: categoryIds,
                     articleId :articleId
                 };

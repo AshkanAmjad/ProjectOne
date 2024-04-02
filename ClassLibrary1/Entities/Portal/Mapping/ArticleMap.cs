@@ -16,6 +16,7 @@ namespace Domain.Entities.Portal.Mapping
 
             this.Property(t => t.Title).IsRequired().HasMaxLength(100);
             this.Property(c => c.Content).IsRequired();
+            this.Property(d => d.Description).IsRequired();
             this.Property(d => d.PublishDate).IsRequired();
             this.Property(d => d.ArticleId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }

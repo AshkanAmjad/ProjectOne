@@ -26,6 +26,13 @@ namespace CMS.Controllers
             return Json(articles.ToDataSourceResult(request));
         }
 
+        public ActionResult DisplayDetails(int id)
+        {
+            var articleSevices = new ArticleSevices();
+            var article = articleSevices.GetArticle(id);
+            return View(article);
+        }
+
         public ActionResult Add()
         {
             using (CMSContext context = new CMSContext())

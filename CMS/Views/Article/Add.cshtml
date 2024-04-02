@@ -37,6 +37,11 @@
                         <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.Content, null, new { @class = "text-danger" })</td>
                     </tr>
                     <tr>
+                        <td>@Html.LabelFor(a => a.Description) &nbsp; : &nbsp;</td>
+                        <td>@Html.TextAreaFor(a => a.Description, new { @class = "form-control", @placeholder = "Enter Article Description ..." })</td>
+                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.Description, null, new { @class = "text-danger" })</td>
+                    </tr>
+                    <tr>
                         <td>@Html.Label("Category") &nbsp; : &nbsp;</td>
                         <td>
                             @(Html.Kendo().MultiSelect()
@@ -65,6 +70,7 @@
             if ($form.valid()) {
                 var title = $("#@Html.IdFor(x=>x.Title)").val();
                 var content = $("#@Html.IdFor(x=>x.Content)").val();
+                var description = $("#@Html.IdFor(x=>x.Description)").val();
                 var categoryId = $("#multiSelect").data("kendoMultiSelect").value();
                 if (categoryId.length==0) {
                     alert("Category is Required");
@@ -73,6 +79,7 @@
                 var data = {
                     title: title,
                     content: content,
+                    description: description,
                     categoryId: categoryId,
                 };
 

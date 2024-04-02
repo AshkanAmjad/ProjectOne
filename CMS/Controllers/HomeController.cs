@@ -1,4 +1,5 @@
-﻿using Kendo.Mvc.Extensions;
+﻿using Bussiness.Security;
+using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
 using System.Collections.Generic;
@@ -13,21 +14,9 @@ namespace CMS.Controllers
     {
         public ActionResult Index()
         {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            var articleSevices = new ArticleSevices();
+            var articles = articleSevices.GetArticles();
+            return View(articles);
         }
     }
 }

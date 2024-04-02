@@ -26,6 +26,9 @@ namespace CMS.Models.Validation
            
             RuleFor(u => u.Email).EmailAddress()
                                  .WithMessage("Email is Invalid.");
+
+            RuleFor(u => u.RoleId).NotEmpty()
+                                  .WithMessage("Role is Required");
         }
     }
 }

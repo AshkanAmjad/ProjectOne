@@ -2,39 +2,62 @@
 @{
     ViewBag.Title = "Login";
 }
-<div class="row">
-    <div class="panel panel-default " style="margin:5rem auto;width:50%;">
-        <div class="panel-heading text-center ">
-            <i class="fa  fa-lg fa-sign-in" style="margin-right:1rem"></i>
-            <b>
-                Login
-            </b>
-        </div>
-        <div class="panel-body">
-            @using (Html.BeginForm("Login", "Account", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true)
+@section style{
+    <style>
+        i{
+            margin-right:1rem
+        }
+        .div-panel{
+            margin:5rem auto;
+            width:50%;
+        }
+        .submit{
+            margin:2rem auto;
+        }
+        table{
+            margin:0 auto;
+        }
+        .validation-text-custom{
+            font-size:1.1rem;
+        }
+        .text-box{
+            padding-top:1.2rem
+        }
+    </style>
+}
+    <div class="row">
+        <div class="panel panel-default div-panel">
+            <div class="panel-heading text-center ">
+                <i class="fa  fa-lg fa-sign-in" style=""></i>
+                <b>
+                    Login
+                </b>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
 
-                <table style="margin:0 auto;">
-                    <tr>
-                        <td>@Html.LabelFor(l => l.UserName)&nbsp; : &nbsp;</td>
-                        <td>@Html.TextBoxFor(u => u.UserName, new { @class = "form-control" })</td>
-                        <td style="font-size:1.1rem;" class="text-center">&nbsp;&nbsp;@Html.ValidationMessageFor(u => u.UserName, null, new { @class = "text-danger" })</td>
-                    </tr>
-                    <tr style="padding-top:3rem">
-                        <td>@Html.LabelFor(l => l.Password)&nbsp; : &nbsp;</td>
-                        <td style="padding-top:1.2rem">@Html.TextBoxFor(p => p.Password, new { @class = "form-control" })</td>
-                        <td style="font-size:1.1rem;" class="text-center">@Html.ValidationMessageFor(p => p.Password, null, new { @class = "text-danger" })</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <input class="btn btn-primary" style="width:100%;margin:2rem auto" value="Login" type="submit" />
-                        </td>
-                    </tr>
-                </table>
-            }
+                    <table>
+                        <tr>
+                            <td>@Html.LabelFor(l => l.UserName)&nbsp; : &nbsp;</td>
+                            <td>@Html.TextBoxFor(u => u.UserName, new { @class = "form-control" })</td>
+                            <td class="text-center validation-text-custom">&nbsp;&nbsp;@Html.ValidationMessageFor(u => u.UserName, null, new { @class = "text-danger" })</td>
+                        </tr>
+                        <tr style="padding-top:3rem">
+                            <td>@Html.LabelFor(l => l.Password)&nbsp; : &nbsp;</td>
+                            <td class="text-box">@Html.TextBoxFor(p => p.Password, new { @class = "form-control" })</td>
+                            <td class="text-center validation-text-custom">@Html.ValidationMessageFor(p => p.Password, null, new { @class = "text-danger" })</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input class="btn btn-primary submit btn-block" value="Login" type="submit" />
+                            </td>
+                        </tr>
+                    </table>
+                }
+            </div>
         </div>
     </div>
-</div>
 

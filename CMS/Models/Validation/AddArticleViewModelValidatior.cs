@@ -16,7 +16,10 @@ namespace CMS.Models.Validation
           
             RuleFor(a => a.Content).NotNull()
                                    .WithMessage("Content is Required");
-        
+
+            RuleFor(a => a.Description).NotNull()
+                                       .WithMessage("Description is Required");
+
             RuleFor(a => a.PublishDate).NotNull()
                                        .WithMessage("Publish Date is Required");
       

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ViewModels.Models.Article.ArticleViewModel>
+
+@{
+    ViewBag.Title = "Display Details";
+}
+@section style{
+    <style>
+        table {
+            margin-top: 2rem;
+        }
+    </style>
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DisplayDetails</title>
+</head>
+<body>
+    <div>
+        @if (Model.Count() != 0)
+        {
+            <table class="table table-hover table-bordered k-shadow">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><b>Title</b> &nbsp; : &nbsp;</td>
+                        <td>@item.Title</td>
+                    </tr>
+                    <tr>
+                        <td><b>Content</b> &nbsp; : &nbsp;</td>
+                        <td>@item.Content</td>
+                    </tr>
+                    <tr>
+                        <td><b>Description</b> &nbsp; : &nbsp;</td>
+                        <td>@item.Description</td>
+                    </tr>
+                    <tr>
+                        <td><b>Publish Date</b> &nbsp; : &nbsp;</td>
+                        <td>@item.PublishDate</td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+    <div>
+        @Html.ActionLink("Back", "Index", "Home", new { @class = "btn btn-primary btn-block" })
+    </div>
+</body>
+</html>

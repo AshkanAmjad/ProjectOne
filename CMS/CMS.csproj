@@ -295,6 +295,8 @@
     <Content Include="Scripts\KendoUI\kendo.web.js" />
     <None Include="Scripts\KendoUI\kendo.web.min.intellisense.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Static\book.jpg" />
+    <Content Include="Static\headerBooks.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -306,8 +308,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Role\Add.cshtml" />
@@ -323,6 +323,7 @@
     <Content Include="Views\Category\Index.cshtml" />
     <Content Include="Views\Article\Add.cshtml" />
     <Content Include="Views\Article\Edit.cshtml" />
+    <Content Include="Views\Article\DisplayDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

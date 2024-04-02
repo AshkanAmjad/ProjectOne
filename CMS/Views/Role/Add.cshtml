@@ -9,7 +9,7 @@
         <div class="modal-header">
             <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">
-                <i class="fa fa-lg fa-plus" style="margin-right:1rem"></i>
+                <i class="fa fa-lg fa-plus"></i>
                 <b>
                     Add Role Form
                 </b>
@@ -24,7 +24,7 @@
                     <tr>
                         <td>@Html.LabelFor(l => l.Title) &nbsp; : &nbsp;</td>
                         <td>@Html.TextBoxFor(t => t.Title, new { @class = "form-control" })</td>
-                        <td style="font-size:1.1rem;" class="text-center">&nbsp;&nbsp; @Html.ValidationMessageFor(t => t.Title, null, new { @class = "text-danger" })</td>
+                        <td class="text-center validation-text-custom">&nbsp;&nbsp; @Html.ValidationMessageFor(t => t.Title, null, new { @class = "text-danger" })</td>
                     </tr>
                 </table>
             }

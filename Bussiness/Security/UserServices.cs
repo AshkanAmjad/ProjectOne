@@ -2,6 +2,7 @@
 using CMS.Models.ViewModels.User;
 using Domain.Data.Context;
 using Domain.Entites.Security.Model;
+using Domain.Entities.Security.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,12 +93,27 @@ namespace Bussiness.Security
                     UserName = model.UserName,
                     Email = model.Email,
                     Password = model.Password,
-                    IsActive = model.IsActive
+                    IsActive = model.IsActive,
                 };
                 using (CMSContext context = new CMSContext())
                 {
                     context.Users.Add(user);
                     context.SaveChanges();
+                }
+                var roles = model.RoleId;
+                foreach(var item in roles)
+                {
+                    UserRole userRoles = new UserRole()
+                    {
+                        UserId = user.UserId,
+                        RoleId = item
+                    };
+                    using(CMSContext context = new CMSContext())
+                    {
+                        context.UserRoles.Add(userRoles);
+                        context.SaveChanges();
+                    }
+
                 }
                 message = "";
                 return true;

@@ -2,6 +2,11 @@
 @{
     ViewBag.Title = "Display Articles";
 }
+<script type="text/javascript">
+    function printLog() {
+        return "test";
+    }
+</script>
 @section style{
     <style>
         .icons {
@@ -34,6 +39,8 @@
 
 <div class="panel panel-default">
     <div class="panel-body">
+
+
         @(Html.Kendo().Grid<ViewModels.Models.Article.ArticleViewModel>()
     .Name("grid")
     .Columns(columns =>
@@ -41,34 +48,34 @@
         //columns.Select().Width(50);
         columns.Bound(c => c.Title);
         columns.Bound(c => c.Content);
-        columns.Bound(c => c.PublishDate);
-        columns.Command(command => { command.Destroy(); }).Width(100);
-    })
-    .ToolBar(t =>
-    {
-        t.Custom().Text("Add").HtmlAttributes(new { @id = "addBtn" });
-        t.Custom().Text("Edit").HtmlAttributes(new { @id = "editBtn" });
-    })
-    .Editable(editTable => editTable.Mode(GridEditMode.InLine).ConfirmDelete("Continue to Delete this record?").DisplayDeleteConfirmation("Continue to delete this record?"))
-    .Pageable(pageable => pageable
-        .Refresh(true)
-        .PageSizes(true)
-        .ButtonCount(5))
-    .Selectable(select => select
-        .Mode(GridSelectionMode.Single))
-    .Sortable()
-    .Scrollable()
-    .HtmlAttributes(new { style = "height: 400px;" })
-    .DataSource(dataSource => dataSource
-        .Ajax()
-        .PageSize(20)
-        .Events(events => events.Error("error_handler"))
-        .Model(model => model.Id(a => a.ArticleId))
-        //.Create(create => create.Action("Add", "Article"))
-        .Read(read => read.Action("FillArticleGrid", "Article"))
-        //.Update(update => update.Action("Edit", "Article"))
-        .Destroy(destroy => destroy.Action("Delete", "Article"))
-        )
+        columns.Bound(c => c.PublishDate).Title("Start Date").Format("{0:dd/MM/yyyy}"); @*.ClientTemplate("#=printLog()#")*@
+columns.Command(command => { command.Destroy(); }).Width(100);
+})
+.ToolBar(t =>
+{
+t.Custom().Text("Add").HtmlAttributes(new { @id = "addBtn" });
+t.Custom().Text("Edit").HtmlAttributes(new { @id = "editBtn" });
+})
+.Editable(editTable => editTable.Mode(GridEditMode.InLine).ConfirmDelete("Continue to Delete this record?").DisplayDeleteConfirmation("Continue to delete this record?"))
+.Pageable(pageable => pageable
+.Refresh(true)
+.PageSizes(true)
+.ButtonCount(5))
+.Selectable(select => select
+.Mode(GridSelectionMode.Single))
+.Sortable()
+.Scrollable()
+.HtmlAttributes(new { style = "height: 400px;" })
+.DataSource(dataSource => dataSource
+.Ajax()
+.PageSize(20)
+.Events(events => events.Error("error_handler"))
+.Model(model => model.Id(a => a.ArticleId))
+//.Create(create => create.Action("Add", "Article"))
+.Read(read => read.Action("FillArticleGrid", "Article"))
+//.Update(update => update.Action("Edit", "Article"))
+.Destroy(destroy => destroy.Action("Delete", "Article"))
+)
         )
     </div>
 </div>

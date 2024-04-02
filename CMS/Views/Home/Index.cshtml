@@ -1,9 +1,67 @@
-﻿@{
+﻿@model IEnumerable<ViewModels.Models.Article.ArticleViewModel>
+@{
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h3 class="text-center">
-        Welcome To Project :)
-    </h3>
+@section style{
+    <style>
+        img {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #fff;
+            border-radius: 6px
+        }
+
+        .header {
+            margin-top: 0.5rem;
+        }
+
+        a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .border {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .date {
+            font-size: 10px
+        }
+
+        .mt-1 {
+            margin-top: 10px
+        }
+    </style>
+}
+<a href="Article" class="k-shadow">
+    <img src="~/Static/headerBooks.jpg" />
+</a>
+<div class="jumbotron k-shadow header">
+    <h2 class="text-center">
+        Welcome To <span class="text-primary"><b>Article Project</b></span>
+    </h2>
+</div>
+<div>
+    <h4>
+        <i class="fa fa-lg fa-folder-o text-primary"></i>
+        <b>Newest</b>
+    </h4>
+    <hr />
+    @foreach (var item in Model)
+    {
+        <div class="panel panel-primary mt-1">
+            <div class="panel-heading">
+                <h4 class="text-center">@item.Title</h4>
+            </div>
+            <div class="panel-body">
+                <p>@item.Content</p>
+                <hr />
+                <p>@item.Description</p>
+                @Html.ActionLink("...", "DisplayDetails", "Article", new { @id = item.ArticleId }, new { @class = "btn btn-primary btn-block" })
+                <span class="date">@item.PublishDate</span>
+            </div>
+        </div>
+    }
 </div>

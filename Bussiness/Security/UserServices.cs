@@ -51,17 +51,21 @@ namespace Bussiness.Security
                                         .Select(x => new EditViewModel
                                         {
                                             UserId = x.UserId,
-                                            UserName=x.UserName,
+                                            UserName = x.UserName,
                                             Password = x.Password,
                                             ConfirmPassword = x.Password,
                                             Email = x.Email,
                                             IsActive = x.IsActive
                                         }).FirstOrDefault();
+
+                user.RoleIds = context.UserRoles.Where(s => s.UserId == userId)
+                                                .Select(s => s.RoleId)
+                                                .ToArray();
                 return user;
             }
         }
 
-        public bool Similarity(string userId,string userName, string email, out string message)
+        public bool Similarity(string userId, string userName, string email, out string message)
         {
             using (CMSContext context = new CMSContext())
             {
@@ -86,7 +90,7 @@ namespace Bussiness.Security
         public bool Add(AddUserViewModel model, out string message)
         {
             string checkMessage = "";
-            if (Similarity( "" ,model.UserName , model.Email, out checkMessage) == false)
+            if (Similarity("", model.UserName, model.Email, out checkMessage) == false)
             {
                 User user = new User()
                 {
@@ -101,14 +105,14 @@ namespace Bussiness.Security
                     context.SaveChanges();
                 }
                 var roles = model.RoleId;
-                foreach(var item in roles)
+                foreach (var item in roles)
                 {
                     UserRole userRoles = new UserRole()
                     {
                         UserId = user.UserId,
                         RoleId = item
                     };
-                    using(CMSContext context = new CMSContext())
+                    using (CMSContext context = new CMSContext())
                     {
                         context.UserRoles.Add(userRoles);
                         context.SaveChanges();
@@ -125,7 +129,7 @@ namespace Bussiness.Security
         public bool Edit(EditViewModel model, out string message)
         {
             string checkMessage = "";
-            if (Similarity(model.UserId.ToString() ,model.UserName , model.Email, out checkMessage) == false)
+            if (Similarity(model.UserId.ToString(), model.UserName, model.Email, out checkMessage) == false)
             {
                 using (CMSContext context = new CMSContext())
                 {
@@ -138,8 +142,61 @@ namespace Bussiness.Security
                         data.IsActive = model.IsActive;
                         context.SaveChanges();
                         message = "";
+                    }
+                    var userRoles = context.UserRoles.Where(r => r.UserId == model.UserId)
+                                                     .ToList();
+
+                    var userRoleIds = userRoles.Select(s => s.RoleId)
+                                               .ToList();
+                    if (userRoles.Any())
+                    {
+                        if (model.RoleIds.Any())
+                        {
+                            var mustBeDeleted = userRoleIds.Except(model.RoleIds);
+                            var mustBeAdded = model.RoleIds.Except(userRoleIds);
+
+                            if (mustBeDeleted.Any())
+                            {
+                                var mustBeDeletedRole = userRoles.Where(r => mustBeDeleted.Contains(r.RoleId))
+                                                                  .ToList();
+                                if (mustBeDeletedRole.Any())
+                                {
+                                    context.UserRoles.RemoveRange(mustBeDeletedRole);
+                                }
+                            }
+                            if (mustBeAdded.Any())
+                            {
+                                foreach (var item in mustBeAdded)
+                                {
+                                    UserRole obj = new UserRole()
+                                    {
+                                        RoleId = item,
+                                        UserId = model.UserId
+                                    };
+                                    context.UserRoles.Add(obj);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var users = context.UserRoles.Where(u => u.UserId == model.UserId)
+                                                       .ToList();
+                            if (users.Any())
+                            {
+                                context.UserRoles.RemoveRange(users);
+                                UserRole userRole = new UserRole()
+                                {
+                                    UserId = model.UserId,
+                                    RoleId = new Guid("00000000-0000-0000-0000-000000000000")
+                                };
+                                context.UserRoles.Add(userRole);
+                            }
+                        }
+                        context.SaveChanges();
+                        message = "";
                         return true;
                     }
+
                 }
             }
             message = checkMessage;

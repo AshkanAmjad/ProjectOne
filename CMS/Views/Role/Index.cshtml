@@ -69,8 +69,9 @@
             margin: 0 auto;
             width: 50%;
         }
+
         .validation-text-custom {
-            font-size:1.1rem;
+            font-size: 1.1rem;
         }
     </style>
 }
@@ -81,11 +82,8 @@
     Roles
 </div>
 <hr />
-<div class="btn btn-primary btn-sm add-btn btn-index-add-role">
-    <i class="fa fa-plus btn-icons"></i>
-    Add
-</div>
-<div id="table-box">
+
+<div id="operation-box" class="modal fade" role="dialog">
 </div>
 
 <div class="panel panel-default">
@@ -98,89 +96,117 @@
         columns.Command(command => { command.Destroy(); }).Width(100);
 
     })
-    .HtmlAttributes(new { style = "height: 550px;" })
-    .Scrollable()
-    //.Groupable()
-    .Sortable()
+    .ToolBar(t =>
+    {
+        t.Custom().Text("Add").HtmlAttributes(new { @id = "addBtn" });
+        t.Custom().Text("Edit").HtmlAttributes(new { @id = "editBtn" });
+    })
     .Editable(editTable => editTable.Mode(GridEditMode.InLine).ConfirmDelete("Continue to Delete this record?").DisplayDeleteConfirmation("Continue to delete this record?"))
     .Pageable(pageable => pageable
         .Refresh(true)
         .PageSizes(true)
         .ButtonCount(5))
+     .Selectable(select=>select
+                        .Mode(GridSelectionMode.Single))    
+    //.Groupable()
+    .Sortable()
+    .HtmlAttributes(new { style = "height: 550px;" })
     .DataSource(dataSource => dataSource
         .Ajax()
+        .PageSize(20)
+        .Events(events => events.Error("error_handler"))
         .Model(model => model.Id(r => r.RoleId))
         .Read(read => read.Action("FillRoleGrid", "Role"))
         .Destroy(destroy => destroy.Action("Delete", "Role"))
-        .PageSize(20)
-    )
+        )
         )
     </div>
 </div>
 
-<div id="add-edit-delete-box" class="modal fade" role="dialog">
-</div>
+
 
 @section scripts
 {
     <script type="text/javascript">
-        var _roleListUrl = '@Url.Action("Get" , "Role")';
         var _addUrl = '@Url.Action("Add","Role")';
         var _editUrl = '@Url.Action("Edit","Role")';
-        var _deleteUrl = '@Url.Action("Delete","Role")';
+        @*var _deleteUrl = '@Url.Action("Delete","Role")';*@
     </script>
-
     <script type="text/javascript">
-        $(document).ready(function (e) {
-            //init grid
-            //gridLoad();
-        });
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Error:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
 
-        //create modal
-        $(".btn-index-add-role").off("click");
-        $(".btn-index-add-role").on("click", function () {
+        // Refresh
+        $(document).ready(function (e) {
+            gridLoad();
+        })
+        function gridLoad() {
+            $("#grid").data('kendoGrid').dataSource.read();
+        }
+        //$(document).ready(function (e) {
+        //    init grid
+        //    gridLoad();
+        //});
+
+        //create
+        $("#addBtn").off("click");
+        $("#addBtn").on("click", function (e) {
+            e.preventDefault();
             $.get(_addUrl).done(function (result) {
-                $("#add-edit-delete-box").html(result);
-                $("#add-edit-delete-box").modal("show");
+                $("#operation-box").html(result);
+                $("#operation-box").modal("show");
             });
         });
 
         //edit modal
-        $(document).off('click', '.edit-btn');
-        $(document).on('click', '.edit-btn', function (e) {
+        $(document).off('click', '#editBtn');
+        $(document).on('click', '#editBtn', function (e) {
             e.preventDefault();
-            var id = $(this).data("roleid");
+            var grid = $("#grid").data("kendoGrid");  
+            var selectedItem = grid.dataItem(grid.select());
+            var id = selectedItem.RoleId;
             $.get(_editUrl, { roleId: id }).done(function (result) {
-                $("#add-edit-delete-box").html(result);
-                $("#add-edit-delete-box").modal("show");
+                $("#operation-box").html(result);
+                $("#operation-box").modal("show");
             });
         })
 
-        //delete modal
-        $(document).off('click', '.btn-index-delete-role');
-        $(document).on('click', '.btn-index-delete-role', function (e) {
-            var id = $(this).data("roleid");
-            $.get(_deleteUrl, { roleId: id }).done(function (result) {
-                $("#add-edit-delete-box").html(result);
-                $("#add-edit-delete-box").modal("show");
-            });
-        });
+        ////delete modal
+        //$(document).off('click', '.btn-index-delete-role');
+        //$(document).on('click', '.btn-index-delete-role', function (e) {
+        //    var id = $(this).data("roleid");
+        //    $.get(_deleteUrl, { roleId: id }).done(function (result) {
+        //        $("#add-edit-delete-box").html(result);
+        //        $("#add-edit-delete-box").modal("show");
+        //    });
+        //});
 
 
         //refresh grid
-        function gridLoad() {
-            $("#table-box").empty();
-            $.ajax({
-                url: _roleListUrl,
-                type: 'GET',
-                datatype: "json",
-                success: function (response) {
-                    $("#table-box").html(response);
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
-        }
+        //function gridLoad() {
+        //    $("#table-box").empty();
+        //    $.ajax({
+        //        url: _roleListUrl,
+        //        type: 'GET',
+        //        datatype: "json",
+        //        success: function (response) {
+        //            $("#table-box").html(response);
+        //        },
+        //        error: function (error) {
+        //            console.log(error);
+        //        }
+        //    });
+        //}
     </script>
 }

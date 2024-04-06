@@ -8,11 +8,13 @@ using System.Web.Mvc;
 using ViewModels.Models.Article;
 using System.Linq;
 using Domain.Data.Context;
+using CMS.Models.Authorization;
 
 namespace CMS.Controllers
 {
     public class ArticleController : Controller
     {
+        [CustomAuthorize(Roles = "Role 3")]
         public ActionResult Index()
         {
             return View();
@@ -22,7 +24,6 @@ namespace CMS.Controllers
         {
             var articleSevices = new ArticleSevices();
             var articles = articleSevices.GetArticles();
-
             return Json(articles.ToDataSourceResult(request));
         }
 
@@ -55,6 +56,10 @@ namespace CMS.Controllers
         [HttpPost]
         public ActionResult Add(AddAritcleViewModel article)
         {
+            if (!HttpContext.User.Identity.IsAuthenticated)
+            {
+                RedirectToAction("Login","Home");
+            }
             bool success = false;
             var message = "Recorded unsuccessfully";
             var checkMessage = "";
@@ -63,6 +68,8 @@ namespace CMS.Controllers
             {
                 try {
                     var articleServices = new ArticleSevices();
+                    var currentUser = HttpContext.User.Identity.Name;
+                    article.AuthorId = articleServices.GetUserIdWithUserName(currentUser);
                     bool result = articleServices.Add(article, out checkMessage);
                     if (result == true)
                     {
@@ -95,8 +102,7 @@ namespace CMS.Controllers
         {
             using (CMSContext context = new CMSContext())
             {
-                var categories = context.Categories.
-                    Select(s => new SelectListItem
+                var categories = context.Categories.Select(s => new SelectListItem
                 {
                     Text = s.Title,
                     Value = s.CategoryId.ToString()

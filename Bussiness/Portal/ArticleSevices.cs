@@ -98,11 +98,11 @@ namespace Bussiness.Security
             {
                 Article article = new Article()
                 {
+                    AuthorId = model.AuthorId,
                     Title = model.Title,
                     Content = model.Content,
                     Description=model.Description,
                     PublishDate = DateTime.Now,
-                    AuthorId = Guid.Parse("4417cb6e-89cf-4147-865d-e5362a283aa4")
                 };
                 using (CMSContext context = new CMSContext())
                 {
@@ -155,12 +155,12 @@ namespace Bussiness.Security
                     {
                         if (model.CategoryIds.Any())
                         {
-                            var mustBeDeletes = articleCategoryIds.Except(model.CategoryIds);
-                            var mustBeAdds = model.CategoryIds.Except(articleCategoryIds);
+                            var mustBeDeleted = articleCategoryIds.Except(model.CategoryIds);
+                            var mustBeAdded = model.CategoryIds.Except(articleCategoryIds);
 
-                            if (mustBeDeletes.Any())
+                            if (mustBeDeleted.Any())
                             {
-                                var mustBeDeletedCategory = articleCategories.Where(c => mustBeDeletes.Contains(c.CategoryId))
+                                var mustBeDeletedCategory = articleCategories.Where(c => mustBeDeleted.Contains(c.CategoryId))
                                                                              .ToList();
                                 if (mustBeDeletedCategory.Any())
                                 {
@@ -176,9 +176,9 @@ namespace Bussiness.Security
                             //    }
                             //    context.SaveChanges();
                             //}
-                            if (mustBeAdds.Any())
+                            if (mustBeAdded.Any())
                             {
-                                foreach (var item in mustBeAdds)
+                                foreach (var item in mustBeAdded)
                                 {
                                     ArticleCategory obj = new ArticleCategory()
                                     {
@@ -191,7 +191,8 @@ namespace Bussiness.Security
                         }
                         else
                         {
-                            var articles = context.ArticleCategories.Where(a => a.ArticleId == model.ArticleId).ToList();
+                            var articles = context.ArticleCategories.Where(a => a.ArticleId == model.ArticleId)
+                                                                    .ToList();
                             if (articles.Any())
                             {
                                 context.ArticleCategories.RemoveRange(articles);
@@ -206,7 +207,6 @@ namespace Bussiness.Security
                         context.SaveChanges();
                         message = "";
                         return true;
-
                     }
                 }
             }
@@ -227,6 +227,20 @@ namespace Bussiness.Security
                 return false;
             }
         }
+
+        public Guid GetUserIdWithUserName(string userName)
+        {
+            if(userName != null)
+            {
+                using(CMSContext context=new CMSContext())
+                {
+                    var userId =context.Users.SingleOrDefault(u => u.UserName == userName).UserId;
+                    return userId;
+                }
+            }
+            return new Guid("00000000-0000-0000-0000-000000000000");
+        }
+
 
         //public bool Add(ArticleViewModel model)
         //{

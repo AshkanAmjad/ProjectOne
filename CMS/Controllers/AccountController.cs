@@ -1,10 +1,14 @@
 ﻿using CMS.Models;
+using CMS.Models.MemberSip;
 using CMS.Models.ViewModel;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Bussiness.Security;
+using System.Collections.Generic;
 
 namespace CMS.Controllers
 {
@@ -12,7 +16,7 @@ namespace CMS.Controllers
     {
         public ActionResult Login()
         {
-            return View();               
+            return View();
         }
 
         [HttpPost]
@@ -36,11 +40,20 @@ namespace CMS.Controllers
                     var user = (CustomMemberShipUser)Membership.GetUser(login.UserName, false);
                     if (user != null)
                     {
-                        var userModel = new
+                        List<string> roleTitles = new List<string>();
+                        if (user.UserRoles.Any())
+                        {
+                            RoleServices roleService = new RoleServices();
+                            var roleIds = user.UserRoles.Select(s => s.RoleId).ToList();
+                            roleTitles = roleService.GetRoleTitleList(roleIds);
+                        }
+
+                        CustomSerializeModel userModel = new CustomSerializeModel
                         {
                             UserId = user.UserId,
+                            Role = roleTitles
                         };
-
+                            
                         string userData = JsonConvert.SerializeObject(userModel);
                         FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket
                             (

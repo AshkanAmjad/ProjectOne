@@ -4,6 +4,7 @@ using Domain.Data.Context;
 using System;
 using System.Linq;
 using System.Web.Security;
+using System.Data.Entity;
 
 namespace CMS.Security
 {
@@ -11,7 +12,7 @@ namespace CMS.Security
     {
         public override bool ValidateUser(string username, string password)
         {
-            if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 return false;
             }
@@ -23,8 +24,8 @@ namespace CMS.Security
                 //          && string.Compare(password, us.Password, StringComparison.OrdinalIgnoreCase) == 0
                 //          && us.IsActive == true
                 //          select us).FirstOrDefault();
-                var user = dbContext.Users.Where(u => u.UserName == username 
-                                                   && u.Password == password 
+                var user = dbContext.Users.Where(u => u.UserName == username
+                                                   && u.Password == password
                                                    && u.IsActive == true)
                                          .FirstOrDefault();
 
@@ -34,13 +35,15 @@ namespace CMS.Security
 
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {
-            using(CMSContext dbContext = new CMSContext())
+            using (CMSContext dbContext = new CMSContext())
             {
                 //var user = (from us in dbContext.Users
                 //            where string.Compare(username, us.Username, StringComparison.OrdinalIgnoreCase) == 0
                 //            select us).FirstOrDefault();
 
-                var user = dbContext.Users.FirstOrDefault(u => u.UserName == username);
+                var user = dbContext.Users
+                                    .Include(s => s.UserRoles)
+                                    .FirstOrDefault(u => u.UserName == username);
                 if (user == null)
                 {
                     return null;

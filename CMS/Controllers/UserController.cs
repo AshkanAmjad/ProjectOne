@@ -1,4 +1,5 @@
 ﻿using Bussiness.Security;
+using CMS.Models.Authorization;
 using CMS.Models.ViewModels.User;
 using Domain.Data.Context;
 using Kendo.Mvc.Extensions;
@@ -11,6 +12,8 @@ using ViewModels.Models.User;
 
 namespace CMS.Controllers
 {
+    //[CustomAuthorize(Roles = "Role1")]
+
     public class UserController : Controller
     {
         public ActionResult Index()
@@ -111,6 +114,15 @@ namespace CMS.Controllers
 
         public ActionResult Edit(Guid userId)
         {
+            using(CMSContext context = new CMSContext())
+            {
+                var roles = context.Roles.Select(s => new SelectListItem
+                {
+                    Text = s.Title,
+                    Value = s.RoleId.ToString()
+                }).ToList();
+                ViewBag.roles = roles;
+            }
             if(userId == Guid.Empty)
             {
                 return HttpNotFound();
@@ -121,7 +133,6 @@ namespace CMS.Controllers
             {
                 return HttpNotFound();
             }
-
             return View(user);
         }
 

@@ -202,14 +202,17 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Authorization\CustomAuthorizeAttribute.cs" />
     <Compile Include="Models\MemberSip\CustomMemberShipUser.cs" />
     <Compile Include="Models\MemberSip\CustomPrincipal.cs" />
+    <Compile Include="Security\CustomRole.cs" />
     <Compile Include="Models\MemberSip\CustomSerializeModel.cs" />
     <Compile Include="Models\Validation\AddArticleViewModelValidatior.cs" />
     <Compile Include="Models\Validation\CategoryViewMdelValidator.cs" />
@@ -324,6 +327,7 @@
     <Content Include="Views\Article\Add.cshtml" />
     <Content Include="Views\Article\Edit.cshtml" />
     <Content Include="Views\Article\DisplayDetails.cshtml" />
+    <Content Include="Views\Error\AccessDenied.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

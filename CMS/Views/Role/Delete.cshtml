@@ -3,18 +3,12 @@
     Layout = null;
     ViewBag.Title = "Delete Role";
 }
-@section style{
-    <style>
-        .hidden {
-            display: none;
-        }
-    </style>
-}
+
 
 <div class="modal-dialog" id="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close text-danger" id="delete-btn" data-dismiss="modal">&times;</button>
+            <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">
                 <i class="fa fa-lg fa-trash-o"></i>
                 <b>
@@ -23,8 +17,8 @@
             </h4>
         </div>
         <div class="modal-body">
-            @Html.TextBoxFor(i => i.RoleId, new { @class = "hidden" })
-            @Html.TextBoxFor(i => i.Title, new { @class = "hidden" })
+            @Html.HiddenFor(i => i.RoleId)
+            @Html.HiddenFor(i => i.Title )
 
             <p>
                 <i class="fa fa-exclamation-triangle fa-lg" style="margin-right:1rem"></i>
@@ -32,27 +26,27 @@
             </p>
         </div>
         <div class="modal-footer" style="display:flex;justify-content:center">
-            <input class="btn btn-danger" value="Delete" type="button" id="btn-delete-role" />
+            <input class="btn btn-danger" value="Delete" type="button" id="delete" />
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
 <script>
    $(function () {
-        $("#btn-delete-role").off("click");
-            $("#btn-delete-role").on("click", function () {
+        $("#delete").off("click");
+            $("#delete").on("click", function () {
                 var id = $("#RoleId").val();
-                $("#btn-delete-role").prop('disabled', true);
+                $("#delete").prop('disabled', true);
                 $.post('@Url.Action("Delete","Role")', { roleId: id })
                     .done(function (result) {
                         if (result.success) {
                              gridLoad();
-                            $("#add-edit-delete-box").modal("toggle");
+                            $("#operation-box").modal("toggle");
                         }
                         alert(result.message);
                     })
                     .always(function () {
-                        $("#btn-delete-role").prop('disabled', false);
+                        $("#delete").prop('disabled', false);
                     })
             });
    });

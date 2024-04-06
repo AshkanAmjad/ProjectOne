@@ -3,13 +3,7 @@
     Layout = null;
     ViewBag.Title = "Edit Role";
 }
-@section style{
-    <style>
-        .hidden {
-            display: none;
-        }
-    </style>
-}
+
 <div class="modal-dialog" id="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -22,11 +16,11 @@
             </h4>
         </div>
         <div class="modal-body">
-            @using (Html.BeginForm("Edit", "Role", FormMethod.Post))
+            @using (Html.BeginForm("Edit", "Role", FormMethod.Post , new {id="EditRoleForm" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
-                @Html.TextBoxFor(i => i.RoleId, new { @class = "hidden" })
+                @Html.HiddenFor(i => i.RoleId)
                 <table style="margin:0 auto;">
                     <tr>
                         <td>@Html.LabelFor(l => l.Title) &nbsp; : &nbsp;</td>
@@ -37,17 +31,54 @@
             }
         </div>
         <div class="modal-footer" style="display:flex;justify-content:center">
-            <input class="btn btn-warning" value="Edit" type="button" id="btn-edit-role" />
+            <input class="btn btn-warning" value="Edit" type="button" id="edit" />
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
 <script>
-   $(function () {
+    $(function () {
+        $("#edit").off("click");
+        $("#edit").on("click", function (e) {
+            var $form = $('#EditRoleForm');
+            $.validator.unobtrusive.parse($form);
+            if ($form.valid()) {
+                var id = $("#@Html.IdFor(x=>x.RoleId)").val();
+                var title = $("#@Html.IdFor(x=>x.Title)").val();
+                if (title.length == 0) {
+                    alert("Role is Required");
+                    return
+                }
+                // Check #x
+                //$( "#x") .prop( "checked", true ;
+                // Uncheck #x
+                // $("#x").prop("checked", false) ;
+                var data = {
+                    roleId: id,
+                    title: title                   
+                };
+
+                $("#edit").prop('disabled', true);
+                $.post('@Url.Action("Edit","Role")', data)
+                    .done(function (result) {
+                        if (result.success) {
+                            gridLoad();
+                            $("#operation-box").modal("toggle");
+                            alert(result.message);
+                        }
+                        else {
+                            alert(result.message);
+                        }
+                    }).always(function () {
+                        $("#edit").prop('disabled', false);
+                    });
+            }
+        });
+    });
+   @*$(function () {
         $("#btn-edit-role").off("click");
             $("#btn-edit-role").on("click", function () {
-                var id = $("#RoleId").val();
-                var title = $("#Title").val();
+
                 $("#btn-edit-role").prop('disabled', true);
                 $.post('@Url.Action("Edit","Role")', { roleId: id, title: title })
                     .done(function (result) {
@@ -62,7 +93,7 @@
                         $("#btn-edit-role").prop('disabled', false);
                     });
             });
-    });
+   });*@
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
             @*function EditRole() {

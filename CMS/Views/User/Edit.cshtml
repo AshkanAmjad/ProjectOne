@@ -1,6 +1,9 @@
 ﻿@model CMS.Models.ViewModels.User.EditViewModel
 @{
     Layout = null;
+    var roles = ViewBag.roles != null
+        ? ViewBag.roles as List<SelectListItem>
+        : new List<SelectListItem>();
 }
 }
 <div class="modal-dialog" id="modal">
@@ -38,6 +41,16 @@
                         <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(u => u.Email, null, new { @class = "text-danger" })</td>
                     </tr>
                     <tr>
+                        <td>@Html.Label("Role") &nbsp; : &nbsp;</td>
+                        <td>
+                            @(Html.Kendo().MultiSelectFor(s=>s.RoleIds)
+                                          .Name("RoleIds")
+                                          .Placeholder("Select Role ...")
+                                          .BindTo(roles))
+                        </td>
+                        <td class="text-center validation-text-custom"> &nbsp;&nbsp; @Html.ValidationMessageFor(a => a.RoleIds, null, new { @class = "text-danger" })</td>
+                    </tr>
+                    <tr>
 
                         <td>@Html.LabelFor(u => u.IsActive) &nbsp; : &nbsp;</td>
                         <td>@Html.CheckBoxFor(u => u.IsActive, new { @class = "control" })</td>
@@ -68,7 +81,12 @@
                 var password = $("#@Html.IdFor(x=>x.Password)").val();
                 var confirmPassword = $("#@Html.IdFor(x=>x.ConfirmPassword)").val();
                 var email = $("#@Html.IdFor(x=>x.Email)").val();
+                var roleIds = $("#RoleIds").data("kendoMultiSelect").value();
                 var isActive = $('#@Html.IdFor(x=>x.IsActive)')[0].checked
+                if (roleIds.length == 0) {
+                    alert("Role is Required");
+                    return
+                }
                 // Check #x
                 //$( "#x") .prop( "checked", true ;
                 // Uncheck #x
@@ -79,9 +97,9 @@
                     userName: userName,
                     confirmPassword: confirmPassword,
                     email: email,
+                    roleIds: roleIds,
                     isActive: isActive
                 };
-
 
                 $("#edit").prop('disabled', true);
                 $.post('@Url.Action("Edit","User")', data)

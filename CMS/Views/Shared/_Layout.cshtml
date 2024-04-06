@@ -52,10 +52,6 @@
                         @Html.ActionLink("Categories", "Index", "Category")
                     </li>
                     <li style="display:flex;justify-content:center;align-items:center;">
-                        <i class="fa fa-sign-in text-primary" style="margin-left:3rem"></i>
-                        @Html.ActionLink("Login", "Login", "Account")
-                    </li>
-                    <li style="display:flex;justify-content:center;align-items:center;">
                         <i class="fa fa-users text-primary" style="margin-left:3rem;"></i>
                         @Html.ActionLink("Users", "Index", "User")
                     </li>
@@ -63,7 +59,19 @@
                         <i class="fa fa-user text-primary" style="margin-left:3rem;"></i>
                         @Html.ActionLink("Roles", "Index", "Role")
                     </li>
-
+                    @if (!HttpContext.Current.User.Identity.IsAuthenticated) { 
+                    <li style="display:flex;justify-content:center;align-items:center;">
+                        
+                        <i class="fa fa-sign-in text-primary" style="margin-left:3rem"></i>
+                        @Html.ActionLink("Login", "Login", "Account")
+                    </li>
+                    }
+                    else
+                    {
+                        <li style="display:flex;justify-content:center;align-items:center;padding-top:2rem;font-size:0.95rem">
+                            <b class="text-primary">Welcome @HttpContext.Current.User.Identity.Name :)</b> 
+                        </li>
+                    }
                 </ul>
             </div>
         </div>

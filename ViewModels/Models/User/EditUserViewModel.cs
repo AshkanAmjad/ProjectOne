@@ -12,6 +12,7 @@ namespace CMS.Models.ViewModels.User
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public string Email { get; set; }
+        public Guid[] RoleIds { get; set; }
         public bool IsActive { get; set; }
     }
 }

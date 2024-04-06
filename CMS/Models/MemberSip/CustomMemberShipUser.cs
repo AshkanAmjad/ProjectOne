@@ -13,16 +13,14 @@ namespace CMS.Models
         #region User Properties
 
         public Guid UserId { get; set; }
-        public ICollection<UserRole> Role { get; set; }
+        public IList<UserRole> UserRoles { get; set; }
 
         #endregion
 
         public CustomMemberShipUser(User user):base("CustomMembership",user.UserName,user.UserId,user.Email,string.Empty,string.Empty,true,false,DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now)
         {
             UserId = user.UserId;
-            Role = user.UserRoles;
+            UserRoles = user.UserRoles.ToList();
         }
-
-
     }
 }

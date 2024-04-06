@@ -77,6 +77,19 @@ namespace Bussiness.Security
             }
         }
 
+        public List<string> GetRoleTitleList(List<Guid> roleIds)
+        {
+            using (CMSContext context = new CMSContext())
+            {
+                var titles = context.Roles
+                                    .Where(s => roleIds.Contains(s.RoleId))
+                                    .Select(s => s.Title)
+                                    .ToList();
+
+                return titles;
+            }
+        }
+
         //public bool Delete(Guid roleId)
         //{
         //    using (CMSContext context = new CMSContext())

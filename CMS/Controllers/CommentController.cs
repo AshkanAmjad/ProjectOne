@@ -15,7 +15,7 @@ namespace CMS.Controllers
         {
             var commentService = new Bussiness.Portal.CommentServices();
             var comments = commentService.Get(id);
-            return Json(comments, JsonRequestBehavior.AllowGet);
+            return Json("comments", JsonRequestBehavior.AllowGet);
         }
 
         //public ActionResult AddComment()

@@ -14,7 +14,7 @@ namespace CMS.Controllers
     {
         public ActionResult Index()
         {
-            var articleSevices = new ArticleSevices();
+            var articleSevices = new ArticleServices();
             var articles = articleSevices.GetArticles();
             return View(articles);
         }

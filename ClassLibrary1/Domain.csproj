@@ -57,9 +57,11 @@
     <Compile Include="Entities\Portal\Mapping\ArticleCategoryMap.cs" />
     <Compile Include="Entities\Portal\Mapping\ArticleMap.cs" />
     <Compile Include="Entities\Portal\Mapping\CategoryMap.cs" />
+    <Compile Include="Entities\Portal\Mapping\CommentMap.cs" />
     <Compile Include="Entities\Portal\Model\ArticleCategory.cs" />
     <Compile Include="Entities\Portal\Model\Article.cs" />
     <Compile Include="Entities\Portal\Model\Category.cs" />
+    <Compile Include="Entities\Portal\Model\Comment.cs" />
     <Compile Include="Entities\Security\Mapping\RoleMap.cs" />
     <Compile Include="Entities\Security\Mapping\UserRoleMap.cs" />
     <Compile Include="Entities\Security\Mapping\UserMap.cs" />
@@ -82,6 +84,14 @@
     <Compile Include="Migrations\202404020643020_AddDescriptionColumn.cs" />
     <Compile Include="Migrations\202404020643020_AddDescriptionColumn.designer.cs">
       <DependentUpon>202404020643020_AddDescriptionColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202404060653004_AddCommentsTbl.cs" />
+    <Compile Include="Migrations\202404060653004_AddCommentsTbl.designer.cs">
+      <DependentUpon>202404060653004_AddCommentsTbl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202404061140361_UpdateCommentTbl.cs" />
+    <Compile Include="Migrations\202404061140361_UpdateCommentTbl.designer.cs">
+      <DependentUpon>202404061140361_UpdateCommentTbl.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,6 +121,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202404020643020_AddDescriptionColumn.resx">
       <DependentUpon>202404020643020_AddDescriptionColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202404060653004_AddCommentsTbl.resx">
+      <DependentUpon>202404060653004_AddCommentsTbl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202404061140361_UpdateCommentTbl.resx">
+      <DependentUpon>202404061140361_UpdateCommentTbl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

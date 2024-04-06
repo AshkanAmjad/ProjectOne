@@ -1,4 +1,5 @@
 ﻿using Bussiness.Security;
+using CMS.Models.Authorization;
 using CMS.Models.Validation;
 using Domain.Data.Context;
 using Domain.Entities.Security.Model;
@@ -12,6 +13,7 @@ using System.Web.Mvc;
 
 namespace CMS.Controllers
 {
+    [CustomAuthorize(Roles = "Role 3")]
     public class RoleController : Controller
     {
         public ActionResult Index()

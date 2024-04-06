@@ -1,4 +1,5 @@
-﻿using Domain.Entites.Portal.Model;
+﻿using ClassLibrary1.Entities.Portal.Model;
+using Domain.Entites.Portal.Model;
 using Domain.Entities.Security.Model;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace Domain.Entites.Security.Model
         #region Relations
         public virtual ICollection<Article> Articles { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
+        public ICollection<Comment> Comments { get; set; }
         #endregion
     }
 }

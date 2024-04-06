@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using ViewModels.Models.Article;
 using ViewModels.Models.Category;
+using ViewModels.Models.Comment;
 
 namespace CMS.Models
 {
@@ -19,9 +20,12 @@ namespace CMS.Models
             validators.Add(typeof(IValidator<Role>), new RoleViewModelValidator());
             validators.Add(typeof(IValidator<ViewModels.User.AddUserViewModel>), new AddUserViewModelValidator());
             validators.Add(typeof(IValidator<ViewModels.User.EditViewModel>), new EditUserViewModelValidator());
-            validators.Add(typeof(IValidator<AddAritcleViewModel>), new AddArticleViewModelValidatior()) ;
+            validators.Add(typeof(IValidator<AddAritcleViewModel>), new AddArticleViewModelValidator()) ;
             validators.Add(typeof(IValidator<EditArticleViewModel>), new EditArticleViewModelValidatior());
             validators.Add(typeof(IValidator<CategoryViewModel>), new CategoryViewMdelValidator());
+            validators.Add(typeof(IValidator<AddCommentViewModel>), new AddCommentViewModelValidator());
+            validators.Add(typeof(IValidator<EditCommentViewModel>), new EditCommentViewModelValidator());
+
         }
 
         public override IValidator CreateInstance(Type validatorType)

@@ -7,9 +7,9 @@ using ViewModels.Models.Article;
 
 namespace CMS.Models.Validation
 {
-    public class AddArticleViewModelValidatior : AbstractValidator<AddAritcleViewModel>
+    public class AddArticleViewModelValidator : AbstractValidator<AddAritcleViewModel>
     {
-        public AddArticleViewModelValidatior()
+        public AddArticleViewModelValidator()
         {
             RuleFor(a => a.Title).NotNull()
                                  .WithMessage("Title is Required");

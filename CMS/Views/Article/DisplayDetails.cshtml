@@ -8,6 +8,18 @@
         table {
             margin-top: 2rem;
         }
+
+        .validation-text-custom {
+            font-size: 1.1rem;
+        }
+
+        .validation-table-custom {
+            margin: 0 auto;
+        }
+
+        td {
+            padding: 5px 0;
+        }
     </style>
 
 }
@@ -46,8 +58,41 @@
             </table>
         }
     </div>
+
+    <hr />
     <div>
-        @Html.ActionLink("Back", "Index", "Home", new { @class = "btn btn-primary btn-block" })
+        @*@using (Html.BeginForm("AddComment", "Article", FormMethod.Post, new { id = "AddCommentForm" }))
+        {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <table class=".validation-table-custom">
+            <tr>
+                <td>@Html.Label("Title") &nbsp;  : &nbsp; </td>
+                <td>
+                    @Html.TextBox()
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+            </tr>
+        </table>
+        }
+        <div class="text-center">
+            <input class="btn btn-success" value="Add" type="button" id="add" />
+            @Html.ActionLink("Back", "Index", new { Controller = "Home" }, new { @class = "btn btn-primary" })
+        </div>*@
     </div>
 </body>
 </html>
+@section scripts{
+    <script>
+        $(document).ready(function (){
+            $("#showComments").load("/Comment/ShowComments/36")
+        })
+    </script>
+
+
+    }
+
+}

@@ -12,8 +12,7 @@ using ViewModels.Models.User;
 
 namespace CMS.Controllers
 {
-    //[CustomAuthorize(Roles = "Role1")]
-
+    [CustomAuthorize(Roles = "Role 3")]
     public class UserController : Controller
     {
         public ActionResult Index()

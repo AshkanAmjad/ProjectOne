@@ -45,6 +45,10 @@
     <Compile Include="Models\Article\ArticleViewModel.cs" />
     <Compile Include="Models\Article\EditArticleViewModel.cs" />
     <Compile Include="Models\Category\CategoryViewModel.cs" />
+    <Compile Include="Models\Comment\AddCommentViewModel.cs" />
+    <Compile Include="Models\Comment\CommentViewModel.cs" />
+    <Compile Include="Models\Comment\DeleteCommentViewModel.cs" />
+    <Compile Include="Models\Comment\EditCommentViewModel.cs" />
     <Compile Include="Models\User\DeleteUserViewModel.cs" />
     <Compile Include="Models\Login\LoginViewModel.cs" />
     <Compile Include="Models\User\AddUserViewModel.cs" />

@@ -9,12 +9,15 @@ using ViewModels.Models.Article;
 using System.Linq;
 using Domain.Data.Context;
 using CMS.Models.Authorization;
+using ViewModels.Models.Comment;
 
 namespace CMS.Controllers
 {
+    [CustomAuthorize(Roles = "Role 3")]
+
+    #region article
     public class ArticleController : Controller
     {
-        [CustomAuthorize(Roles = "Role 3")]
         public ActionResult Index()
         {
             return View();
@@ -22,14 +25,15 @@ namespace CMS.Controllers
 
         public ActionResult FillArticleGrid(DataSourceRequest request)
         {
-            var articleSevices = new ArticleSevices();
+            var articleSevices = new Bussiness.Security.ArticleServices();
             var articles = articleSevices.GetArticles();
             return Json(articles.ToDataSourceResult(request));
         }
 
+        [AllowAnonymous]
         public ActionResult DisplayDetails(int id)
         {
-            var articleSevices = new ArticleSevices();
+            var articleSevices = new Bussiness.Security.ArticleServices();
             var article = articleSevices.GetArticle(id);
             return View(article);
         }
@@ -67,7 +71,7 @@ namespace CMS.Controllers
             if (ModelState.IsValid && article != null)
             {
                 try {
-                    var articleServices = new ArticleSevices();
+                    var articleServices = new Bussiness.Security.ArticleServices();
                     var currentUser = HttpContext.User.Identity.Name;
                     article.AuthorId = articleServices.GetUserIdWithUserName(currentUser);
                     bool result = articleServices.Add(article, out checkMessage);
@@ -113,7 +117,7 @@ namespace CMS.Controllers
             {
                 return HttpNotFound();
             }
-            var articleServices = new ArticleSevices();
+            var articleServices = new Bussiness.Security.ArticleServices();
             var article = articleServices.GetArticleByIdForEdit(articleId);
             return View(article);
         }
@@ -128,7 +132,7 @@ namespace CMS.Controllers
             {
                 try
                 {
-                    var articleServices = new ArticleSevices();
+                    var articleServices = new Bussiness.Security.ArticleServices();
                     bool result = articleServices.Edit(article, out checkMessage);
                     if (result == true)
                     {
@@ -161,10 +165,13 @@ namespace CMS.Controllers
         {
             if (article != null)
             {
-                var articleServices = new ArticleSevices();
+                var articleServices = new Bussiness.Security.ArticleServices();
                 bool result = articleServices.Delete(article);
             }
             return Json(new[] { article }.ToDataSourceResult(request, ModelState));
         }
+        #endregion
+
+
     }
 }

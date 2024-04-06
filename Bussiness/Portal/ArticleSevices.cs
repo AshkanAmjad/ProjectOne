@@ -10,7 +10,7 @@ using ViewModels.Models.Category;
 
 namespace Bussiness.Security
 {
-    public class ArticleSevices
+    public class ArticleServices
     {
         public List<ArticleViewModel> GetArticles()
         {
@@ -24,7 +24,7 @@ namespace Bussiness.Security
                                             Content = x.Content,
                                             Description=x.Description,
                                             PublishDate = x.PublishDate
-                                        }).ToList();
+                                        }).Take(4).ToList();
                 return articles;
             }
         }

@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Portal\CategoryServices.cs" />
+    <Compile Include="Portal\CommentServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Portal\ArticleSevices.cs" />
     <Compile Include="Security\RoleServices.cs" />

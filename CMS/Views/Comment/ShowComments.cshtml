@@ -1,0 +1,20 @@
+﻿@model IEnumerable<ViewModels.Models.Comment.CommentViewModel>
+
+@if(true)
+    {
+        <ul>
+            @foreach (var item in Model)
+            {
+                <li>
+                    @item.UserId :
+                </li>
+                <li>
+                    @item.Content
+                </li>
+                <li>
+                    @item.CreateDate
+                </li>
+            }
+        </ul>
+    
+}

@@ -1,4 +1,5 @@
 ﻿using Bussiness.Portal;
+using CMS.Models.Authorization;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
@@ -10,6 +11,7 @@ using ViewModels.Models.Category;
 
 namespace CMS.Controllers
 {
+    [CustomAuthorize(Roles = "Role 3")]
     public class CategoryController : Controller
     {
         // GET: Category

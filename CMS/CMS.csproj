@@ -202,6 +202,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -212,9 +213,11 @@
     <Compile Include="Models\Authorization\CustomAuthorizeAttribute.cs" />
     <Compile Include="Models\MemberSip\CustomMemberShipUser.cs" />
     <Compile Include="Models\MemberSip\CustomPrincipal.cs" />
+    <Compile Include="Models\Validation\AddCommentViewModelValidator.cs" />
+    <Compile Include="Models\Validation\EditCommentViewModelValidator.cs" />
     <Compile Include="Security\CustomRole.cs" />
     <Compile Include="Models\MemberSip\CustomSerializeModel.cs" />
-    <Compile Include="Models\Validation\AddArticleViewModelValidatior.cs" />
+    <Compile Include="Models\Validation\AddArticleViewModelValidator.cs" />
     <Compile Include="Models\Validation\CategoryViewMdelValidator.cs" />
     <Compile Include="Models\Validation\EditArticleViewModelValidatior.cs" />
     <Compile Include="Models\Validation\EditUserViewModelValidator.cs" />
@@ -328,6 +331,8 @@
     <Content Include="Views\Article\Edit.cshtml" />
     <Content Include="Views\Article\DisplayDetails.cshtml" />
     <Content Include="Views\Error\AccessDenied.cshtml" />
+    <Content Include="Views\Shared\_DisplayComments.cshtml" />
+    <Content Include="Views\Comment\ShowComments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
